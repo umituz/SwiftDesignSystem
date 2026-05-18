@@ -1,0 +1,118 @@
+import SwiftUI
+
+public enum AppButtonStyle {
+    case primary
+    case secondary
+    case outline
+    case ghost
+}
+
+public struct AppButton: View {
+    let title: String
+    let icon: String?
+    let style: AppButtonStyle
+    let isLoading: Bool
+    let isDisabled: Bool
+    let action: () -> Void
+
+    public init(
+        _ title: String,
+        icon: String? = nil,
+        style: AppButtonStyle = .primary,
+        isLoading: Bool = false,
+        isDisabled: Bool = false,
+        action: @escaping () -> Void
+    ) {
+        self.title = title
+        self.icon = icon
+        self.style = style
+        self.isLoading = isLoading
+        self.isDisabled = isDisabled
+        self.action = action
+    }
+
+    public var body: some View {
+        Button(action: action) {
+            buttonContent
+        }
+        .disabled(isDisabled || isLoading)
+        .opacity(isDisabled ? 0.5 : 1.0)
+    }
+
+    @ViewBuilder
+    private var buttonContent: some View {
+        switch style {
+        case .primary:
+            primaryContent
+        case .secondary:
+            secondaryContent
+        case .outline:
+            outlineContent
+        case .ghost:
+            ghostContent
+        }
+    }
+
+    private var primaryContent: some View {
+        HStack(spacing: DesignTokens.Spacing.sm) {
+            if isLoading {
+                ProgressView()
+                    .tint(.white)
+            } else {
+                iconView
+            }
+            Text(title)
+                .font(DesignTokens.Typography.bodyBold)
+        }
+        .frame(maxWidth: .infinity)
+        .frame(height: DesignTokens.Sizing.buttonHeight)
+        .background(DesignTokens.Gradients.hero)
+        .clipShape(RoundedRectangle(cornerRadius: DesignTokens.CornerRadius.lg, style: .continuous))
+        .shadow(color: DesignTokens.Colors.primary.opacity(0.3), radius: 10, y: 5)
+    }
+
+    private var secondaryContent: some View {
+        Text(title)
+            .font(DesignTokens.Typography.subheadlineBold)
+            .padding(.horizontal, DesignTokens.Spacing.xl)
+            .padding(.vertical, DesignTokens.Spacing.sm + 2)
+            .background(
+                Capsule()
+                    .stroke(DesignTokens.Colors.primary.opacity(0.3), lineWidth: 1.5)
+            )
+            .foregroundColor(DesignTokens.Colors.primary)
+    }
+
+    private var outlineContent: some View {
+        HStack(spacing: DesignTokens.Spacing.sm) {
+            iconView
+            Text(title)
+                .font(DesignTokens.Typography.bodyBold)
+        }
+        .frame(maxWidth: .infinity)
+        .frame(height: DesignTokens.Sizing.buttonHeight)
+        .background(
+            RoundedRectangle(cornerRadius: DesignTokens.CornerRadius.lg, style: .continuous)
+                .stroke(DesignTokens.Colors.primary.opacity(0.3), lineWidth: 1.5)
+        )
+        .foregroundColor(DesignTokens.Colors.primary)
+    }
+
+    private var ghostContent: some View {
+        HStack(spacing: DesignTokens.Spacing.sm) {
+            iconView
+            Text(title)
+                .font(DesignTokens.Typography.body)
+        }
+        .padding(.horizontal, DesignTokens.Spacing.lg)
+        .padding(.vertical, DesignTokens.Spacing.sm)
+    }
+
+    @ViewBuilder
+    private var iconView: some View {
+        if let icon {
+            Image(systemName: icon)
+                .font(.system(size: DesignTokens.Sizing.iconSmall))
+        }
+    }
+}
