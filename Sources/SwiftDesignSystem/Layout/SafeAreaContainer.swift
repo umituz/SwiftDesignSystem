@@ -1,5 +1,6 @@
 import SwiftUI
 
+// MARK: - SafeAreaContainer
 public struct SafeAreaContainer<Content: View>: View {
     let content: Content
     var edges: Edge.Set

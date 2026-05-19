@@ -1,5 +1,6 @@
 import SwiftUI
 
+// MARK: - LoadingStateView
 public struct LoadingStateView: View {
     let message: String?
 
@@ -10,7 +11,7 @@ public struct LoadingStateView: View {
     public var body: some View {
         VStack(spacing: DesignTokens.Spacing.lg) {
             ProgressView()
-                .scaleEffect(1.2)
+                .scaleEffect(DesignTokens.Opacity.barelyVisible)
                 .tint(DesignTokens.Colors.primary)
 
             if let message {
@@ -20,5 +21,7 @@ public struct LoadingStateView: View {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(message ?? "Loading")
     }
 }

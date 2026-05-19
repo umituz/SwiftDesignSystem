@@ -1,5 +1,6 @@
 import SwiftUI
 
+// MARK: - ScreenHeader
 public struct ScreenHeader: View {
     let title: String
     let subtitle: String?
@@ -27,11 +28,16 @@ public struct ScreenHeader: View {
     public var body: some View {
         HStack(alignment: .center) {
             if let leftIcon, let leftAction {
-                Button(action: leftAction) {
+                Button(action: {
+                    AppHaptics.light()
+                    leftAction()
+                }) {
                     Image(systemName: leftIcon)
                         .font(.system(size: DesignTokens.Sizing.iconLarge))
                         .foregroundColor(DesignTokens.Colors.textPrimary)
                 }
+                .accessibilityLabel("Navigate back")
+                .accessibilityAddTraits(.isButton)
             }
 
             VStack(alignment: .leading, spacing: 2) {
@@ -49,14 +55,21 @@ public struct ScreenHeader: View {
             Spacer()
 
             if let rightIcon, let rightAction {
-                Button(action: rightAction) {
+                Button(action: {
+                    AppHaptics.light()
+                    rightAction()
+                }) {
                     Image(systemName: rightIcon)
                         .font(.system(size: DesignTokens.Sizing.iconLarge))
                         .foregroundColor(DesignTokens.Colors.textPrimary)
                 }
+                .accessibilityLabel("Action")
+                .accessibilityAddTraits(.isButton)
             }
         }
         .padding(.horizontal, DesignTokens.Spacing.lg)
         .padding(.vertical, DesignTokens.Spacing.sm)
+        .accessibilityElement(children: .combine)
+        .accessibilityAddTraits(.isHeader)
     }
 }

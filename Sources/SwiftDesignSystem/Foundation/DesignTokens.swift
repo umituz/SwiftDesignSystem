@@ -109,6 +109,20 @@ public enum DesignTokens {
         public static let caption = Font.system(size: 12, weight: .regular)
         public static let captionBold = Font.system(size: 12, weight: .semibold)
         public static let caption2 = Font.system(size: 11, weight: .regular)
+
+        #if canImport(UIKit)
+        /// Returns a Dynamic Type-scaled font based on a base size and text style.
+        public static func scaled(
+            baseSize: CGFloat,
+            weight: Font.Weight = .regular,
+            design: Font.Design = .rounded,
+            textStyle: UIFont.TextStyle = .body
+        ) -> Font {
+            let metrics = UIFontMetrics(forTextStyle: textStyle)
+            let scaledSize = metrics.scaledValue(for: baseSize)
+            return Font.system(size: scaledSize, weight: weight, design: design)
+        }
+        #endif
     }
 
     // MARK: - Spacing
@@ -152,6 +166,12 @@ public enum DesignTokens {
         public static let searchBarHeight: CGFloat = 36
         public static let listItemHeight: CGFloat = 56
 
+        public static let linearProgressHeight: CGFloat = 6
+        public static let bottomSheetMediumHeight: CGFloat = 400
+        public static let bottomSheetLargeHeight: CGFloat = 600
+        public static let dragIndicatorWidth: CGFloat = 36
+        public static let dragIndicatorHeight: CGFloat = 5
+
         public static let chartHeight: CGFloat = 200
         public static let heroCircle: CGFloat = 180
 
@@ -165,6 +185,7 @@ public enum DesignTokens {
         public static let subtle = DesignShadow(color: .black.opacity(0.06), radius: 4, y: 2)
         public static let medium = DesignShadow(color: .black.opacity(0.1), radius: 8, y: 4)
         public static let strong = DesignShadow(color: Colors.primary.opacity(0.3), radius: 16, y: 8)
+        public static let cardTint = DesignShadow(color: Colors.primary.opacity(0.3), radius: 10, y: 5)
     }
 
     // MARK: - Animations
@@ -193,6 +214,8 @@ public enum DesignTokens {
         public static let semiTransparent: Double = 0.5
         public static let barelyVisible: Double = 0.75
         public static let fullyVisible: Double = 1.0
+        public static let shimmerOverlay: Double = 0.3
+        public static let textOnTint: Double = 0.8
     }
 
     // MARK: - Z-Index Layers

@@ -1,5 +1,6 @@
 import SwiftUI
 
+// MARK: - Avatar Size
 public enum AppAvatarSize {
     case small
     case medium
@@ -25,6 +26,7 @@ public enum AppAvatarSize {
     }
 }
 
+// MARK: - AppAvatar
 public struct AppAvatar: View {
     let imageName: String?
     let initials: String?
@@ -59,8 +61,16 @@ public struct AppAvatar: View {
                 Text(initials)
                     .font(size.font)
                     .fontWeight(.semibold)
-                    .foregroundColor(.white)
+                    .foregroundColor(DesignTokens.Colors.textOnPrimary)
             }
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(accessibilityDescription)
+    }
+
+    private var accessibilityDescription: String {
+        if imageName != nil { return "Avatar image" }
+        if let initials { return "Avatar: \(initials)" }
+        return "Avatar"
     }
 }

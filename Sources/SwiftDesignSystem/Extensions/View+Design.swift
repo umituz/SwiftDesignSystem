@@ -20,7 +20,7 @@ extension View {
             .padding(.vertical, DesignTokens.Spacing.xxxl)
             .background(DesignTokens.Gradients.hero)
             .clipShape(RoundedRectangle(cornerRadius: cornerRadius, style: .continuous))
-            .shadow(color: DesignTokens.Colors.primary.opacity(0.3), radius: 16, y: 8)
+            .appShadow(DesignTokens.Shadows.strong)
     }
 }
 
@@ -104,7 +104,7 @@ extension View {
     public func shimmer(isActive: Bool) -> some View {
         self.overlay(
             LinearGradient(
-                colors: [.clear, Color.white.opacity(0.3), .clear],
+                colors: [.clear, DesignTokens.Colors.textOnPrimary.opacity(DesignTokens.Opacity.shimmerOverlay), .clear],
                 startPoint: isActive ? .leading : .trailing,
                 endPoint: isActive ? .trailing : .leading
             )
@@ -150,6 +150,7 @@ public struct RoundedCorner: Shape {
     }
 }
 
+// MARK: - Per-Corner Radius
 extension View {
     public func cornerRadius(_ topLeft: CGFloat, _ topRight: CGFloat, _ bottomLeft: CGFloat, _ bottomRight: CGFloat) -> some View {
         clipShape(RoundedCorner(topLeft: topLeft, topRight: topRight, bottomLeft: bottomLeft, bottomRight: bottomRight))

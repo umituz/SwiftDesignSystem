@@ -1,5 +1,6 @@
 import SwiftUI
 
+// MARK: - InfoCard
 public struct InfoCard: View {
     let title: String
     let message: String?
@@ -28,6 +29,7 @@ public struct InfoCard: View {
                     Image(systemName: icon)
                         .font(.system(size: DesignTokens.Sizing.iconLarge))
                         .foregroundColor(DesignTokens.Colors.primary)
+                        .accessibilityHidden(true)
                 }
 
                 Text(title)
@@ -50,5 +52,7 @@ public struct InfoCard: View {
         .padding(DesignTokens.Spacing.lg)
         .background(DesignTokens.Colors.surface)
         .clipShape(RoundedRectangle(cornerRadius: DesignTokens.CornerRadius.lg, style: .continuous))
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(title)
     }
 }

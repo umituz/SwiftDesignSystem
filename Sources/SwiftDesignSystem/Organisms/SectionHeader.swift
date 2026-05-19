@@ -1,5 +1,6 @@
 import SwiftUI
 
+// MARK: - SectionHeader
 public struct SectionHeader: View {
     let title: String
     let actionTitle: String?
@@ -24,13 +25,20 @@ public struct SectionHeader: View {
             Spacer()
 
             if let actionTitle, let action {
-                Button(action: action) {
+                Button(action: {
+                    AppHaptics.light()
+                    action()
+                }) {
                     Text(actionTitle)
                         .font(DesignTokens.Typography.subheadlineBold)
                         .foregroundColor(DesignTokens.Colors.primary)
                 }
+                .accessibilityLabel(actionTitle)
+                .accessibilityAddTraits(.isButton)
             }
         }
         .padding(.horizontal, DesignTokens.Spacing.lg)
+        .accessibilityElement(children: .combine)
+        .accessibilityAddTraits(.isHeader)
     }
 }

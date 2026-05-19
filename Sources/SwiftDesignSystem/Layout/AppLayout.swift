@@ -1,23 +1,24 @@
 import SwiftUI
 
-public struct AppLayout<Content: View>: View {
+// MARK: - AppLayout
+public struct AppLayout<Content: View, Trailing: View>: View {
     let title: String?
     let showsBackButton: Bool
     let onBack: (() -> Void)?
-    let trailingContent: AnyView?
+    let trailingContent: Trailing
     @ViewBuilder let content: () -> Content
 
     public init(
         title: String? = nil,
         showsBackButton: Bool = false,
         onBack: (() -> Void)? = nil,
-        trailingContent: (() -> AnyView)? = nil,
+        @ViewBuilder trailingContent: () -> Trailing = { EmptyView() },
         @ViewBuilder content: @escaping () -> Content
     ) {
         self.title = title
         self.showsBackButton = showsBackButton
         self.onBack = onBack
-        self.trailingContent = trailingContent?()
+        self.trailingContent = trailingContent()
         self.content = content
     }
 
@@ -31,7 +32,6 @@ public struct AppLayout<Content: View>: View {
                         ScreenHeader(
                             title: title,
                             leftIcon: showsBackButton ? "chevron.left" : nil,
-                            rightIcon: nil,
                             leftAction: onBack
                         )
                         .padding(.bottom, DesignTokens.Spacing.md)

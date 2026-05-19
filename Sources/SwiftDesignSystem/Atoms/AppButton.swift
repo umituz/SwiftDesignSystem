@@ -1,5 +1,6 @@
 import SwiftUI
 
+// MARK: - Button Style
 public enum AppButtonStyle {
     case primary
     case secondary
@@ -7,6 +8,7 @@ public enum AppButtonStyle {
     case ghost
 }
 
+// MARK: - AppButton
 public struct AppButton: View {
     let title: String
     let icon: String?
@@ -32,12 +34,19 @@ public struct AppButton: View {
     }
 
     public var body: some View {
-        Button(action: action) {
+        Button(action: {
+            AppHaptics.light()
+            action()
+        }) {
             buttonContent
         }
         .disabled(isDisabled || isLoading)
-        .opacity(isDisabled ? 0.5 : 1.0)
+        .opacity(isDisabled ? DesignTokens.Opacity.semiTransparent : DesignTokens.Opacity.fullyVisible)
+        .accessibilityLabel(title)
+        .accessibilityAddTraits(.isButton)
     }
+
+    // MARK: - Content Variants
 
     @ViewBuilder
     private var buttonContent: some View {
@@ -57,7 +66,7 @@ public struct AppButton: View {
         HStack(spacing: DesignTokens.Spacing.sm) {
             if isLoading {
                 ProgressView()
-                    .tint(.white)
+                    .tint(DesignTokens.Colors.textOnPrimary)
             } else {
                 iconView
             }
@@ -68,7 +77,7 @@ public struct AppButton: View {
         .frame(height: DesignTokens.Sizing.buttonHeight)
         .background(DesignTokens.Gradients.hero)
         .clipShape(RoundedRectangle(cornerRadius: DesignTokens.CornerRadius.lg, style: .continuous))
-        .shadow(color: DesignTokens.Colors.primary.opacity(0.3), radius: 10, y: 5)
+        .appShadow(DesignTokens.Shadows.cardTint)
     }
 
     private var secondaryContent: some View {
@@ -78,7 +87,7 @@ public struct AppButton: View {
             .padding(.vertical, DesignTokens.Spacing.sm + 2)
             .background(
                 Capsule()
-                    .stroke(DesignTokens.Colors.primary.opacity(0.3), lineWidth: 1.5)
+                    .stroke(DesignTokens.Colors.primary.opacity(DesignTokens.Opacity.veryTransparent), lineWidth: DesignTokens.Border.thick)
             )
             .foregroundColor(DesignTokens.Colors.primary)
     }
@@ -93,7 +102,7 @@ public struct AppButton: View {
         .frame(height: DesignTokens.Sizing.buttonHeight)
         .background(
             RoundedRectangle(cornerRadius: DesignTokens.CornerRadius.lg, style: .continuous)
-                .stroke(DesignTokens.Colors.primary.opacity(0.3), lineWidth: 1.5)
+                .stroke(DesignTokens.Colors.primary.opacity(DesignTokens.Opacity.veryTransparent), lineWidth: DesignTokens.Border.thick)
         )
         .foregroundColor(DesignTokens.Colors.primary)
     }

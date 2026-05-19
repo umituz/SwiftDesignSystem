@@ -1,5 +1,6 @@
 import SwiftUI
 
+// MARK: - Stat Card Style
 public enum StatCardStyle {
     case compact
     case standard
@@ -7,6 +8,7 @@ public enum StatCardStyle {
     case gradient
 }
 
+// MARK: - StatCard
 public struct StatCard: View {
     let icon: String
     let value: String
@@ -41,11 +43,14 @@ public struct StatCard: View {
         }
     }
 
+    // MARK: - Compact
+
     private var compactContent: some View {
         HStack(spacing: DesignTokens.Spacing.sm) {
             Image(systemName: icon)
                 .font(.system(size: DesignTokens.Sizing.iconMedium))
                 .foregroundColor(color)
+                .accessibilityHidden(true)
 
             VStack(alignment: .leading, spacing: 2) {
                 Text(value)
@@ -56,13 +61,18 @@ public struct StatCard: View {
                     .foregroundColor(DesignTokens.Colors.textTertiary)
             }
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(label): \(value)")
     }
+
+    // MARK: - Standard
 
     private var standardContent: some View {
         VStack(spacing: DesignTokens.Spacing.sm) {
             Image(systemName: icon)
                 .font(.system(size: DesignTokens.Sizing.iconLarge))
                 .foregroundColor(color)
+                .accessibilityHidden(true)
 
             Text(value)
                 .font(DesignTokens.Typography.title3)
@@ -76,14 +86,19 @@ public struct StatCard: View {
         .padding(DesignTokens.Spacing.lg)
         .background(DesignTokens.Colors.surface)
         .clipShape(RoundedRectangle(cornerRadius: DesignTokens.CornerRadius.lg, style: .continuous))
-        .shadow(color: DesignShadow(color: .black.opacity(0.06), radius: 4, y: 2).color, radius: 4, y: 2)
+        .appShadow(DesignTokens.Shadows.subtle)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(label): \(value)")
     }
+
+    // MARK: - Large
 
     private var largeContent: some View {
         VStack(spacing: DesignTokens.Spacing.md) {
             Image(systemName: icon)
                 .font(.system(size: DesignTokens.Sizing.iconXLarge))
                 .foregroundColor(color)
+                .accessibilityHidden(true)
 
             Text(value)
                 .font(DesignTokens.Typography.largeTitle)
@@ -97,33 +112,40 @@ public struct StatCard: View {
         .padding(DesignTokens.Spacing.xl)
         .background(DesignTokens.Colors.surface)
         .clipShape(RoundedRectangle(cornerRadius: DesignTokens.CornerRadius.xl, style: .continuous))
-        .shadow(color: DesignShadow(color: .black.opacity(0.1), radius: 8, y: 4).color, radius: 8, y: 4)
+        .appShadow(DesignTokens.Shadows.medium)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(label): \(value)")
     }
+
+    // MARK: - Gradient
 
     private var gradientContent: some View {
         VStack(spacing: DesignTokens.Spacing.sm) {
             Image(systemName: icon)
                 .font(.system(size: DesignTokens.Sizing.iconLarge))
-                .foregroundColor(.white)
+                .foregroundColor(DesignTokens.Colors.textOnPrimary)
+                .accessibilityHidden(true)
 
             Text(value)
                 .font(DesignTokens.Typography.title3)
-                .foregroundColor(.white)
+                .foregroundColor(DesignTokens.Colors.textOnPrimary)
 
             Text(label)
                 .font(DesignTokens.Typography.caption)
-                .foregroundColor(.white.opacity(0.8))
+                .foregroundColor(DesignTokens.Colors.textOnPrimary.opacity(DesignTokens.Opacity.textOnTint))
         }
         .frame(maxWidth: .infinity)
         .padding(DesignTokens.Spacing.lg)
         .background(
             LinearGradient(
-                colors: [color, color.opacity(0.7)],
+                colors: [color, color.opacity(DesignTokens.Opacity.semiTransparent)],
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )
         )
         .clipShape(RoundedRectangle(cornerRadius: DesignTokens.CornerRadius.lg, style: .continuous))
-        .shadow(color: color.opacity(0.3), radius: 10, y: 5)
+        .appShadow(DesignTokens.Shadows.cardTint)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(label): \(value)")
     }
 }

@@ -1,5 +1,6 @@
 import SwiftUI
 
+// MARK: - Chip
 public struct Chip: View {
     let title: String
     let icon: String?
@@ -22,7 +23,10 @@ public struct Chip: View {
     }
 
     public var body: some View {
-        Button(action: action) {
+        Button(action: {
+            AppHaptics.selectionChanged()
+            action()
+        }) {
             HStack(spacing: DesignTokens.Spacing.xs) {
                 if let icon {
                     Image(systemName: icon)
@@ -34,13 +38,16 @@ public struct Chip: View {
             .padding(.horizontal, DesignTokens.Spacing.md)
             .padding(.vertical, DesignTokens.Spacing.sm)
             .background(isSelected ? color : Color.clear)
-            .foregroundColor(isSelected ? .white : DesignTokens.Colors.textPrimary)
+            .foregroundColor(isSelected ? DesignTokens.Colors.textOnPrimary : DesignTokens.Colors.textPrimary)
             .clipShape(Capsule())
             .overlay(
                 Capsule()
-                    .stroke(isSelected ? Color.clear : DesignTokens.Colors.separator, lineWidth: 1)
+                    .stroke(isSelected ? Color.clear : DesignTokens.Colors.separator, lineWidth: DesignTokens.Border.regular)
             )
         }
         .buttonStyle(.plain)
+        .accessibilityLabel(title)
+        .accessibilityAddTraits(.isButton)
+        .accessibilityValue(isSelected ? "Selected" : "Not selected")
     }
 }

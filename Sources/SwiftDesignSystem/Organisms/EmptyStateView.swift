@@ -1,5 +1,6 @@
 import SwiftUI
 
+// MARK: - EmptyStateView
 public struct EmptyStateView: View {
     let icon: String
     let title: String
@@ -26,6 +27,7 @@ public struct EmptyStateView: View {
             Image(systemName: icon)
                 .font(.system(size: DesignTokens.Sizing.iconHero))
                 .foregroundColor(DesignTokens.Colors.textTertiary)
+                .accessibilityHidden(true)
 
             VStack(spacing: DesignTokens.Spacing.xs) {
                 Text(title)
@@ -47,5 +49,13 @@ public struct EmptyStateView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(DesignTokens.Spacing.xxxl)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(accessibilityDescription)
+    }
+
+    private var accessibilityDescription: String {
+        var parts = [title]
+        if let message { parts.append(message) }
+        return parts.joined(separator: ". ")
     }
 }

@@ -3,6 +3,7 @@ import SwiftUI
 import UIKit
 #endif
 
+// MARK: - AppTextField
 public struct AppTextField: View {
     let placeholder: String
     let label: String?
@@ -32,6 +33,7 @@ public struct AppTextField: View {
                 Text(label)
                     .font(DesignTokens.Typography.footnote)
                     .foregroundColor(DesignTokens.Colors.textSecondary)
+                    .accessibilityHidden(true)
             }
 
             fieldContent
@@ -45,7 +47,7 @@ public struct AppTextField: View {
                     RoundedRectangle(cornerRadius: DesignTokens.CornerRadius.md, style: .continuous)
                         .stroke(
                             errorMessage != nil ? DesignTokens.Colors.danger : DesignTokens.Colors.separator,
-                            lineWidth: 1
+                            lineWidth: DesignTokens.Border.regular
                         )
                 )
                 .focused($isFocused)
@@ -56,6 +58,8 @@ public struct AppTextField: View {
                     .foregroundColor(DesignTokens.Colors.danger)
             }
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(label ?? placeholder)
     }
 
     @ViewBuilder
@@ -63,6 +67,7 @@ public struct AppTextField: View {
         if isSecure {
             SecureField(placeholder, text: $text)
                 .font(DesignTokens.Typography.body)
+                .textContentType(.password)
         } else {
             TextField(placeholder, text: $text)
                 .font(DesignTokens.Typography.body)

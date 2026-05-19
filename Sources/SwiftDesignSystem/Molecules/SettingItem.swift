@@ -1,5 +1,6 @@
 import SwiftUI
 
+// MARK: - SettingItem
 public struct SettingItem: View {
     let icon: String
     let title: String
@@ -22,10 +23,11 @@ public struct SettingItem: View {
         HStack(spacing: DesignTokens.Spacing.md) {
             Image(systemName: icon)
                 .font(.system(size: DesignTokens.Sizing.iconMedium))
-                .foregroundColor(.white)
+                .foregroundColor(DesignTokens.Colors.textOnPrimary)
                 .frame(width: DesignTokens.Sizing.badgeSmall, height: DesignTokens.Sizing.badgeSmall)
                 .background(color)
                 .clipShape(RoundedRectangle(cornerRadius: DesignTokens.CornerRadius.sm, style: .continuous))
+                .accessibilityHidden(true)
 
             VStack(alignment: .leading, spacing: 2) {
                 Text(title)
@@ -43,5 +45,7 @@ public struct SettingItem: View {
         }
         .padding(.horizontal, DesignTokens.Spacing.lg)
         .padding(.vertical, DesignTokens.Spacing.md)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(title)
     }
 }

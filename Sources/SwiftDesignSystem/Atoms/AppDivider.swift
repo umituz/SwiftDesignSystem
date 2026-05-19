@@ -1,5 +1,6 @@
 import SwiftUI
 
+// MARK: - AppDivider
 public struct AppDivider: View {
     let isFullWidth: Bool
     let color: Color
@@ -20,5 +21,6 @@ public struct AppDivider: View {
             .fill(color)
             .frame(height: thickness)
             .padding(.horizontal, isFullWidth ? 0 : DesignTokens.Spacing.xl)
+            .accessibilityHidden(true)
     }
 }

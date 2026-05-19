@@ -3,6 +3,7 @@ import SwiftUI
 import UIKit
 #endif
 
+// MARK: - AppHaptics
 public enum AppHaptics {
 
     #if canImport(UIKit)
@@ -40,5 +41,13 @@ public enum AppHaptics {
         let generator = UISelectionFeedbackGenerator()
         generator.selectionChanged()
     }
+    #else
+    public static func light() {}
+    public static func medium() {}
+    public static func heavy() {}
+    public static func success() {}
+    public static func warning() {}
+    public static func error() {}
+    public static func selectionChanged() {}
     #endif
 }

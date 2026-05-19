@@ -1,5 +1,6 @@
 import SwiftUI
 
+// MARK: - AppSearchField
 public struct AppSearchField: View {
     let placeholder: String
     @Binding var text: String
@@ -20,6 +21,7 @@ public struct AppSearchField: View {
             Image(systemName: "magnifyingglass")
                 .font(.system(size: DesignTokens.Sizing.iconMedium))
                 .foregroundColor(DesignTokens.Colors.textTertiary)
+                .accessibilityHidden(true)
 
             TextField(placeholder, text: $text)
                 .font(DesignTokens.Typography.body)
@@ -33,6 +35,7 @@ public struct AppSearchField: View {
                         .font(.system(size: DesignTokens.Sizing.iconMedium))
                         .foregroundColor(DesignTokens.Colors.textTertiary)
                 }
+                .accessibilityLabel("Clear search")
             }
         }
         .frame(height: DesignTokens.Sizing.searchBarHeight + DesignTokens.Spacing.sm)
@@ -41,5 +44,7 @@ public struct AppSearchField: View {
             RoundedRectangle(cornerRadius: DesignTokens.CornerRadius.md, style: .continuous)
                 .fill(DesignTokens.Colors.surface)
         )
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(placeholder)
     }
 }

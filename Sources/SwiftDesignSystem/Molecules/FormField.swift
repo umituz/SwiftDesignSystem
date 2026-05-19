@@ -1,5 +1,6 @@
 import SwiftUI
 
+// MARK: - FormField
 public struct FormField<Content: View>: View {
     let label: String
     let errorMessage: String?
@@ -20,6 +21,7 @@ public struct FormField<Content: View>: View {
             Text(label)
                 .font(DesignTokens.Typography.footnote)
                 .foregroundColor(DesignTokens.Colors.textSecondary)
+                .accessibilityHidden(true)
 
             content()
 
@@ -29,5 +31,7 @@ public struct FormField<Content: View>: View {
                     .foregroundColor(DesignTokens.Colors.danger)
             }
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(label)
     }
 }

@@ -1,10 +1,12 @@
 import SwiftUI
 
+// MARK: - Progress Style
 public enum AppProgressStyle {
     case linear
     case circular
 }
 
+// MARK: - AppProgressView
 public struct AppProgressView: View {
     let progress: Double
     let style: AppProgressStyle
@@ -35,6 +37,8 @@ public struct AppProgressView: View {
         }
     }
 
+    // MARK: - Circular
+
     private var circularContent: some View {
         VStack(spacing: DesignTokens.Spacing.sm) {
             ZStack {
@@ -59,7 +63,11 @@ public struct AppProgressView: View {
                     .foregroundColor(DesignTokens.Colors.textTertiary)
             }
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityValue("\(Int(progress * 100)) percent")
     }
+
+    // MARK: - Linear
 
     private var linearContent: some View {
         VStack(spacing: DesignTokens.Spacing.xs) {
@@ -74,7 +82,7 @@ public struct AppProgressView: View {
                         .animation(DesignTokens.Animations.progress, value: progress)
                 }
             }
-            .frame(height: 6)
+            .frame(height: DesignTokens.Sizing.linearProgressHeight)
 
             if let label {
                 Text(label)
@@ -83,5 +91,7 @@ public struct AppProgressView: View {
                     .frame(maxWidth: .infinity, alignment: .trailing)
             }
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityValue("\(Int(progress * 100)) percent")
     }
 }

@@ -1,5 +1,6 @@
 import SwiftUI
 
+// MARK: - ResponsiveGrid
 public struct ResponsiveGrid<Content: View>: View {
     let minItemWidth: CGFloat
     let spacing: CGFloat

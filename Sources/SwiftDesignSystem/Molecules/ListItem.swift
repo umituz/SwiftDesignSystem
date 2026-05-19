@@ -1,5 +1,6 @@
 import SwiftUI
 
+// MARK: - ListItem
 public struct ListItem: View {
     let icon: String?
     let title: String
@@ -25,13 +26,17 @@ public struct ListItem: View {
     }
 
     public var body: some View {
-        Button(action: { action?() }) {
+        Button(action: {
+            AppHaptics.light()
+            action?()
+        }) {
             HStack(spacing: DesignTokens.Spacing.md) {
                 if let icon {
                     Image(systemName: icon)
                         .font(.system(size: DesignTokens.Sizing.iconMedium))
                         .foregroundColor(DesignTokens.Colors.primary)
                         .frame(width: DesignTokens.Sizing.iconLarge + DesignTokens.Spacing.xs)
+                        .accessibilityHidden(true)
                 }
 
                 VStack(alignment: .leading, spacing: 2) {
@@ -58,11 +63,22 @@ public struct ListItem: View {
                     Image(systemName: "chevron.right")
                         .font(.system(size: DesignTokens.Sizing.iconSmall, weight: .semibold))
                         .foregroundColor(DesignTokens.Colors.textTertiary)
+                        .accessibilityHidden(true)
                 }
             }
             .padding(.horizontal, DesignTokens.Spacing.lg)
             .padding(.vertical, DesignTokens.Spacing.md)
         }
         .buttonStyle(.plain)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(accessibilityDescription)
+        .accessibilityAddTraits(action != nil ? .isButton : [])
+    }
+
+    private var accessibilityDescription: String {
+        var parts = [title]
+        if let subtitle { parts.append(subtitle) }
+        if let trailing { parts.append(trailing) }
+        return parts.joined(separator: ", ")
     }
 }

@@ -31,6 +31,11 @@ final class DesignTokensTests: XCTestCase {
         XCTAssertEqual(DesignTokens.Sizing.buttonHeight, 48)
         XCTAssertEqual(DesignTokens.Sizing.textFieldHeight, 48)
         XCTAssertEqual(DesignTokens.Sizing.iPadMaxWidth, 700)
+        XCTAssertEqual(DesignTokens.Sizing.linearProgressHeight, 6)
+        XCTAssertEqual(DesignTokens.Sizing.bottomSheetMediumHeight, 400)
+        XCTAssertEqual(DesignTokens.Sizing.bottomSheetLargeHeight, 600)
+        XCTAssertEqual(DesignTokens.Sizing.dragIndicatorWidth, 36)
+        XCTAssertEqual(DesignTokens.Sizing.dragIndicatorHeight, 5)
     }
 
     // MARK: - Border Tests
@@ -45,6 +50,8 @@ final class DesignTokensTests: XCTestCase {
         XCTAssertEqual(DesignTokens.Opacity.fullyVisible, 1.0)
         XCTAssertEqual(DesignTokens.Opacity.semiTransparent, 0.5)
         XCTAssertEqual(DesignTokens.Opacity.transparent, 0.25)
+        XCTAssertEqual(DesignTokens.Opacity.shimmerOverlay, 0.3)
+        XCTAssertEqual(DesignTokens.Opacity.textOnTint, 0.8)
     }
 
     // MARK: - Breakpoint Tests
@@ -74,6 +81,7 @@ final class DesignTokensTests: XCTestCase {
         XCTAssertEqual(DesignTokens.Shadows.subtle.radius, 4)
         XCTAssertEqual(DesignTokens.Shadows.medium.radius, 8)
         XCTAssertEqual(DesignTokens.Shadows.strong.radius, 16)
+        XCTAssertEqual(DesignTokens.Shadows.cardTint.radius, 10)
     }
 
     // MARK: - Design Scale Tests

@@ -1,5 +1,6 @@
 import SwiftUI
 
+// MARK: - ToggleRow
 public struct ToggleRow: View {
     let title: String
     let subtitle: String?
@@ -28,6 +29,7 @@ public struct ToggleRow: View {
                     .font(.system(size: DesignTokens.Sizing.iconMedium))
                     .foregroundColor(tint)
                     .frame(width: DesignTokens.Sizing.iconLarge + DesignTokens.Spacing.xs)
+                    .accessibilityHidden(true)
             }
 
             VStack(alignment: .leading, spacing: 2) {
@@ -47,8 +49,14 @@ public struct ToggleRow: View {
             Toggle("", isOn: $isOn)
                 .labelsHidden()
                 .tint(tint)
+                .onChange(of: isOn) {
+                    AppHaptics.selectionChanged()
+                }
         }
         .padding(.horizontal, DesignTokens.Spacing.lg)
         .padding(.vertical, DesignTokens.Spacing.md)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(title)
+        .accessibilityValue(isOn ? "On" : "Off")
     }
 }

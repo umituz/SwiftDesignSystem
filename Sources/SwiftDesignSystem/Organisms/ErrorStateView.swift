@@ -1,5 +1,6 @@
 import SwiftUI
 
+// MARK: - ErrorStateView
 public struct ErrorStateView: View {
     let icon: String
     let title: String
@@ -26,6 +27,7 @@ public struct ErrorStateView: View {
             Image(systemName: icon)
                 .font(.system(size: DesignTokens.Sizing.iconHero))
                 .foregroundColor(DesignTokens.Colors.danger)
+                .accessibilityHidden(true)
 
             VStack(spacing: DesignTokens.Spacing.xs) {
                 Text(title)
@@ -45,5 +47,13 @@ public struct ErrorStateView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(DesignTokens.Spacing.xxxl)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(accessibilityDescription)
+    }
+
+    private var accessibilityDescription: String {
+        var parts = ["Error: \(title)"]
+        if let message { parts.append(message) }
+        return parts.joined(separator: ". ")
     }
 }

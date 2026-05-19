@@ -1,5 +1,6 @@
 import SwiftUI
 
+// MARK: - AdaptiveContainer
 public struct AdaptiveContainer<Content: View>: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     let content: Content
