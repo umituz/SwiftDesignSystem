@@ -1,28 +1,25 @@
 import SwiftUI
 
 // MARK: - ScreenHeader
-public struct ScreenHeader: View {
+public struct AppScreenHeader<Trailing: View>: View {
     let title: String
     let subtitle: String?
     let leftIcon: String?
-    let rightIcon: String?
     let leftAction: (() -> Void)?
-    let rightAction: (() -> Void)?
+    @ViewBuilder let trailingContent: () -> Trailing
 
     public init(
         title: String,
         subtitle: String? = nil,
         leftIcon: String? = nil,
-        rightIcon: String? = nil,
         leftAction: (() -> Void)? = nil,
-        rightAction: (() -> Void)? = nil
+        @ViewBuilder trailingContent: @escaping () -> Trailing = { EmptyView() }
     ) {
         self.title = title
         self.subtitle = subtitle
         self.leftIcon = leftIcon
-        self.rightIcon = rightIcon
         self.leftAction = leftAction
-        self.rightAction = rightAction
+        self.trailingContent = trailingContent
     }
 
     public var body: some View {
@@ -33,14 +30,14 @@ public struct ScreenHeader: View {
                     leftAction()
                 }) {
                     Image(systemName: leftIcon)
-                        .font(.system(size: DesignTokens.Sizing.iconLarge))
+                        .font(DesignTokens.IconTypography.large)
                         .foregroundColor(DesignTokens.Colors.textPrimary)
                 }
-                .accessibilityLabel("Navigate back")
+                .accessibilityLabel(SystemStrings.Accessibility.navigateBack)
                 .accessibilityAddTraits(.isButton)
             }
 
-            VStack(alignment: .leading, spacing: 2) {
+            VStack(alignment: .leading, spacing: DesignTokens.Spacing.tight) {
                 Text(title)
                     .font(DesignTokens.Typography.largeTitle)
                     .foregroundColor(DesignTokens.Colors.textPrimary)
@@ -54,18 +51,7 @@ public struct ScreenHeader: View {
 
             Spacer()
 
-            if let rightIcon, let rightAction {
-                Button(action: {
-                    AppHaptics.light()
-                    rightAction()
-                }) {
-                    Image(systemName: rightIcon)
-                        .font(.system(size: DesignTokens.Sizing.iconLarge))
-                        .foregroundColor(DesignTokens.Colors.textPrimary)
-                }
-                .accessibilityLabel("Action")
-                .accessibilityAddTraits(.isButton)
-            }
+            trailingContent()
         }
         .padding(.horizontal, DesignTokens.Spacing.lg)
         .padding(.vertical, DesignTokens.Spacing.sm)

@@ -1,9 +1,9 @@
 import SwiftUI
 
 // MARK: - SafeAreaContainer
-public struct SafeAreaContainer<Content: View>: View {
+public struct AppSafeAreaContainer<Content: View>: View {
+    let edges: Edge.Set
     let content: Content
-    var edges: Edge.Set
 
     public init(
         edges: Edge.Set = .all,
@@ -15,7 +15,6 @@ public struct SafeAreaContainer<Content: View>: View {
 
     public var body: some View {
         content
-            .padding(.top, edges.contains(.top) ? DesignTokens.Spacing.xs : 0)
-            .padding(.bottom, edges.contains(.bottom) ? DesignTokens.Spacing.xs : 0)
+            .safeAreaPadding(edges)
     }
 }

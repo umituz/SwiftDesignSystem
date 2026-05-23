@@ -1,7 +1,7 @@
 import SwiftUI
 
-// MARK: - SelectableCard
-public struct SelectableCard: View {
+// MARK: - AppSelectableCard
+public struct AppSelectableCard: View {
     let icon: String
     let title: String
     let subtitle: String?
@@ -32,14 +32,14 @@ public struct SelectableCard: View {
         }) {
             HStack(spacing: DesignTokens.Spacing.md) {
                 Image(systemName: icon)
-                    .font(.system(size: DesignTokens.Sizing.iconLarge))
-                    .foregroundColor(isSelected ? DesignTokens.Colors.textOnPrimary : color)
+                    .font(DesignTokens.IconTypography.large)
+                    .foregroundColor(StyleResolution.selectionForeground(isSelected: isSelected, activeColor: color, inactiveColor: color))
                     .frame(width: DesignTokens.Sizing.badgeMedium, height: DesignTokens.Sizing.badgeMedium)
-                    .background(isSelected ? color : color.opacity(DesignTokens.Opacity.veryTransparent))
+                    .background(StyleResolution.iconBackground(isSelected: isSelected, activeColor: color))
                     .clipShape(RoundedRectangle(cornerRadius: DesignTokens.CornerRadius.md, style: .continuous))
                     .accessibilityHidden(true)
 
-                VStack(alignment: .leading, spacing: 2) {
+                VStack(alignment: .leading, spacing: DesignTokens.Spacing.tight) {
                     Text(title)
                         .font(DesignTokens.Typography.bodyBold)
                         .foregroundColor(DesignTokens.Colors.textPrimary)
@@ -53,22 +53,25 @@ public struct SelectableCard: View {
 
                 Spacer()
 
-                Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
-                    .font(.system(size: DesignTokens.Sizing.iconLarge))
-                    .foregroundColor(isSelected ? color : DesignTokens.Colors.textTertiary)
+                Image(systemName: StyleResolution.selectionIndicatorIcon(isSelected: isSelected))
+                    .font(DesignTokens.IconTypography.large)
+                    .foregroundColor(StyleResolution.iconTintColor(isSelected: isSelected, activeColor: color))
                     .accessibilityHidden(true)
             }
             .padding(DesignTokens.Spacing.lg)
-            .background(isSelected ? color.opacity(DesignTokens.Opacity.nearlyInvisible) : DesignTokens.Colors.surface)
+            .background(StyleResolution.selectionBackgroundFill(isSelected: isSelected, activeColor: color))
             .clipShape(RoundedRectangle(cornerRadius: DesignTokens.CornerRadius.lg, style: .continuous))
             .overlay(
                 RoundedRectangle(cornerRadius: DesignTokens.CornerRadius.lg, style: .continuous)
-                    .stroke(isSelected ? color : DesignTokens.Colors.separator, lineWidth: isSelected ? DesignTokens.Border.thick : DesignTokens.Border.thin)
+                    .stroke(
+                        StyleResolution.selectionBorder(isSelected: isSelected, activeColor: color),
+                        lineWidth: StyleResolution.selectionBorderWidth(isSelected: isSelected)
+                    )
             )
         }
         .buttonStyle(.plain)
         .accessibilityLabel(title)
-        .accessibilityValue(isSelected ? "Selected" : "Not selected")
+        .accessibilityValue(StyleResolution.selectionLabel(isSelected: isSelected))
         .accessibilityAddTraits(.isButton)
     }
 }

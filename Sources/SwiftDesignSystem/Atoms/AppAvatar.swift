@@ -69,8 +69,8 @@ public struct AppAvatar: View {
     }
 
     private var accessibilityDescription: String {
-        if imageName != nil { return "Avatar image" }
-        if let initials { return "Avatar: \(initials)" }
-        return "Avatar"
+        if imageName != nil { return SystemStrings.Accessibility.avatarImage }
+        if let initials { return SystemStrings.avatarWithInitials(initials) }
+        return SystemStrings.Accessibility.avatar
     }
 }

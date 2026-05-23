@@ -1,7 +1,7 @@
 import SwiftUI
 
-// MARK: - Chip
-public struct Chip: View {
+// MARK: - AppChip
+public struct AppChip: View {
     let title: String
     let icon: String?
     @Binding var isSelected: Bool
@@ -30,24 +30,24 @@ public struct Chip: View {
             HStack(spacing: DesignTokens.Spacing.xs) {
                 if let icon {
                     Image(systemName: icon)
-                        .font(.system(size: DesignTokens.Sizing.iconSmall))
+                        .font(DesignTokens.IconTypography.small)
                 }
                 Text(title)
                     .font(DesignTokens.Typography.subheadline)
             }
             .padding(.horizontal, DesignTokens.Spacing.md)
             .padding(.vertical, DesignTokens.Spacing.sm)
-            .background(isSelected ? color : Color.clear)
-            .foregroundColor(isSelected ? DesignTokens.Colors.textOnPrimary : DesignTokens.Colors.textPrimary)
+            .background(StyleResolution.selectionBackground(isSelected: isSelected, activeColor: color))
+            .foregroundColor(StyleResolution.selectionForeground(isSelected: isSelected, activeColor: color))
             .clipShape(Capsule())
             .overlay(
                 Capsule()
-                    .stroke(isSelected ? Color.clear : DesignTokens.Colors.separator, lineWidth: DesignTokens.Border.regular)
+                    .stroke(StyleResolution.selectionBorder(isSelected: isSelected, activeColor: color, inactiveColor: Color.clear), lineWidth: DesignTokens.Border.regular)
             )
         }
         .buttonStyle(.plain)
         .accessibilityLabel(title)
         .accessibilityAddTraits(.isButton)
-        .accessibilityValue(isSelected ? "Selected" : "Not selected")
+        .accessibilityValue(StyleResolution.selectionLabel(isSelected: isSelected))
     }
 }

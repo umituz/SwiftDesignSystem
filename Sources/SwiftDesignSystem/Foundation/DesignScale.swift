@@ -8,11 +8,13 @@ public enum DesignScale {
         base: CGFloat,
         horizontalSizeClass: UserInterfaceSizeClass?
     ) -> CGFloat {
-        horizontalSizeClass == .regular ? base * 1.5 : base
+        AdaptiveValue(compact: base, regular: base * 1.5)
+            .resolve(for: horizontalSizeClass)
     }
 
     public static func fontScale(horizontalSizeClass: UserInterfaceSizeClass?) -> CGFloat {
-        horizontalSizeClass == .regular ? 1.1 : 1.0
+        AdaptiveValue(compact: 1.0, regular: 1.1)
+            .resolve(for: horizontalSizeClass)
     }
 
     // MARK: - Grid Columns
@@ -21,8 +23,11 @@ public enum DesignScale {
         minItemWidth: CGFloat = 150,
         spacing: CGFloat = DesignTokens.Spacing.md
     ) -> Int {
-        let effectiveMin = minItemWidth + spacing
-        return max(1, Int(availableWidth / effectiveMin))
+        DimensionCalculation.gridColumnCount(
+            availableWidth: availableWidth,
+            minItemWidth: minItemWidth,
+            spacing: spacing
+        )
     }
 
     // MARK: - Content Width
@@ -31,7 +36,7 @@ public enum DesignScale {
         horizontalSizeClass: UserInterfaceSizeClass?
     ) -> CGFloat {
         if horizontalSizeClass == .regular {
-            return min(screenwidth, DesignTokens.Sizing.iPadMaxWidth)
+            return DimensionCalculation.cappedWidth(width: screenwidth, maxWidth: DesignTokens.Sizing.iPadMaxWidth)
         }
         return screenwidth
     }
@@ -40,16 +45,14 @@ public enum DesignScale {
     public static func horizontalPadding(
         horizontalSizeClass: UserInterfaceSizeClass?
     ) -> CGFloat {
-        horizontalSizeClass == .regular
-            ? DesignTokens.Spacing.xl
-            : DesignTokens.Spacing.lg
+        AdaptiveValue(compact: DesignTokens.Spacing.lg, regular: DesignTokens.Spacing.xl)
+            .resolve(for: horizontalSizeClass)
     }
 
     public static func sectionPadding(
         horizontalSizeClass: UserInterfaceSizeClass?
     ) -> CGFloat {
-        horizontalSizeClass == .regular
-            ? DesignTokens.Spacing.xxl
-            : DesignTokens.Spacing.xl
+        AdaptiveValue(compact: DesignTokens.Spacing.xl, regular: DesignTokens.Spacing.xxl)
+            .resolve(for: horizontalSizeClass)
     }
 }

@@ -29,20 +29,36 @@ public struct AppLayout<Content: View, Trailing: View>: View {
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(spacing: 0) {
                     if let title {
-                        ScreenHeader(
+                        AppScreenHeader(
                             title: title,
-                            leftIcon: showsBackButton ? "chevron.left" : nil,
+                            leftIcon: headerLeftIcon,
                             leftAction: onBack
-                        )
+                        ) {
+                            trailingContent
+                        }
                         .padding(.bottom, DesignTokens.Spacing.md)
                     }
 
                     content()
                 }
-                .frame(maxWidth: isTablet ? DesignTokens.Sizing.iPadMaxWidth : .infinity)
-                .frame(maxWidth: .infinity)
+                .frame(maxWidth: contentMaxWidth(isTablet: isTablet))
+                .frame(maxWidth: .infinity, alignment: .center)
             }
         }
         .background(DesignTokens.Colors.groupedBackground)
+    }
+
+    private var headerLeftIcon: String? {
+        if showsBackButton {
+            return SystemStrings.StateIcons.backNavigation
+        }
+        return nil
+    }
+
+    private func contentMaxWidth(isTablet: Bool) -> CGFloat {
+        if isTablet {
+            return DesignTokens.Sizing.iPadMaxWidth
+        }
+        return .infinity
     }
 }

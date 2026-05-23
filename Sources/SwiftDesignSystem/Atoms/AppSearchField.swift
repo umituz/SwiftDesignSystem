@@ -7,7 +7,7 @@ public struct AppSearchField: View {
     var onSubmit: (() -> Void)?
 
     public init(
-        _ placeholder: String = "Search",
+        _ placeholder: String = SystemStrings.Defaults.searchPlaceholder,
         text: Binding<String>,
         onSubmit: (() -> Void)? = nil
     ) {
@@ -18,8 +18,8 @@ public struct AppSearchField: View {
 
     public var body: some View {
         HStack(spacing: DesignTokens.Spacing.sm) {
-            Image(systemName: "magnifyingglass")
-                .font(.system(size: DesignTokens.Sizing.iconMedium))
+            Image(systemName: SystemStrings.StateIcons.search)
+                .font(DesignTokens.IconTypography.medium)
                 .foregroundColor(DesignTokens.Colors.textTertiary)
                 .accessibilityHidden(true)
 
@@ -31,11 +31,11 @@ public struct AppSearchField: View {
                 Button {
                     text = ""
                 } label: {
-                    Image(systemName: "xmark.circle.fill")
-                        .font(.system(size: DesignTokens.Sizing.iconMedium))
+                    Image(systemName: SystemStrings.StateIcons.clearField)
+                        .font(DesignTokens.IconTypography.medium)
                         .foregroundColor(DesignTokens.Colors.textTertiary)
                 }
-                .accessibilityLabel("Clear search")
+                .accessibilityLabel(SystemStrings.Accessibility.clearSearch)
             }
         }
         .frame(height: DesignTokens.Sizing.searchBarHeight + DesignTokens.Spacing.sm)

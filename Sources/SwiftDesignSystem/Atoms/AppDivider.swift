@@ -20,7 +20,14 @@ public struct AppDivider: View {
         Rectangle()
             .fill(color)
             .frame(height: thickness)
-            .padding(.horizontal, isFullWidth ? 0 : DesignTokens.Spacing.xl)
+            .padding(.horizontal, horizontalPadding)
             .accessibilityHidden(true)
+    }
+
+    private var horizontalPadding: CGFloat {
+        if isFullWidth {
+            return 0
+        }
+        return DesignTokens.Spacing.xl
     }
 }

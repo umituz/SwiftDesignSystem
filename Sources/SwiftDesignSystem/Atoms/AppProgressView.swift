@@ -21,7 +21,7 @@ public struct AppProgressView: View {
         backgroundColor: Color = DesignTokens.Colors.surface,
         label: String? = nil
     ) {
-        self.progress = progress
+        self.progress = ProgressCalculation.clamped(progress)
         self.style = style
         self.color = color
         self.backgroundColor = backgroundColor
@@ -46,12 +46,12 @@ public struct AppProgressView: View {
                     .stroke(backgroundColor, lineWidth: DesignTokens.Border.thick)
 
                 Circle()
-                    .trim(from: 0, to: min(progress, 1.0))
+                    .trim(from: 0, to: progress)
                     .stroke(color, style: StrokeStyle(lineWidth: DesignTokens.Border.thick, lineCap: .round))
                     .rotationEffect(.degrees(-90))
                     .animation(DesignTokens.Animations.progress, value: progress)
 
-                Text("\(Int(progress * 100))%")
+                Text(ProgressCalculation.percentageString(progress))
                     .font(DesignTokens.Typography.captionBold)
                     .foregroundColor(DesignTokens.Colors.textSecondary)
             }
@@ -64,7 +64,7 @@ public struct AppProgressView: View {
             }
         }
         .accessibilityElement(children: .combine)
-        .accessibilityValue("\(Int(progress * 100)) percent")
+        .accessibilityValue(ProgressCalculation.accessibilityPercentString(progress))
     }
 
     // MARK: - Linear
@@ -78,7 +78,7 @@ public struct AppProgressView: View {
 
                     RoundedRectangle(cornerRadius: DesignTokens.CornerRadius.sm)
                         .fill(color)
-                        .frame(width: geometry.size.width * min(progress, 1.0))
+                        .frame(width: ProgressCalculation.barWidth(fraction: progress, availableWidth: geometry.size.width))
                         .animation(DesignTokens.Animations.progress, value: progress)
                 }
             }
@@ -92,6 +92,6 @@ public struct AppProgressView: View {
             }
         }
         .accessibilityElement(children: .combine)
-        .accessibilityValue("\(Int(progress * 100)) percent")
+        .accessibilityValue(ProgressCalculation.accessibilityPercentString(progress))
     }
 }

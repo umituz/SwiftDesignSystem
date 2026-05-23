@@ -45,10 +45,7 @@ public struct AppTextField: View {
                 )
                 .overlay(
                     RoundedRectangle(cornerRadius: DesignTokens.CornerRadius.md, style: .continuous)
-                        .stroke(
-                            errorMessage != nil ? DesignTokens.Colors.danger : DesignTokens.Colors.separator,
-                            lineWidth: DesignTokens.Border.regular
-                        )
+                        .stroke(StyleResolution.fieldBorderColor(hasError: errorMessage != nil), lineWidth: DesignTokens.Border.regular)
                 )
                 .focused($isFocused)
 

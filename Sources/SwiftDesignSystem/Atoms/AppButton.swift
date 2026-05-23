@@ -41,7 +41,7 @@ public struct AppButton: View {
             buttonContent
         }
         .disabled(isDisabled || isLoading)
-        .opacity(isDisabled ? DesignTokens.Opacity.semiTransparent : DesignTokens.Opacity.fullyVisible)
+        .opacity(StyleResolution.disabledOpacity(isDisabled: isDisabled))
         .accessibilityLabel(title)
         .accessibilityAddTraits(.isButton)
     }
@@ -81,20 +81,33 @@ public struct AppButton: View {
     }
 
     private var secondaryContent: some View {
-        Text(title)
-            .font(DesignTokens.Typography.subheadlineBold)
-            .padding(.horizontal, DesignTokens.Spacing.xl)
-            .padding(.vertical, DesignTokens.Spacing.sm + 2)
-            .background(
-                Capsule()
-                    .stroke(DesignTokens.Colors.primary.opacity(DesignTokens.Opacity.veryTransparent), lineWidth: DesignTokens.Border.thick)
-            )
-            .foregroundColor(DesignTokens.Colors.primary)
+        HStack(spacing: DesignTokens.Spacing.sm) {
+            if isLoading {
+                ProgressView()
+                    .tint(DesignTokens.Colors.primary)
+            } else {
+                iconView
+            }
+            Text(title)
+                .font(DesignTokens.Typography.subheadlineBold)
+        }
+        .padding(.horizontal, DesignTokens.Spacing.xl)
+        .padding(.vertical, DesignTokens.Spacing.md)
+        .background(
+            RoundedRectangle(cornerRadius: DesignTokens.CornerRadius.lg, style: .continuous)
+                .stroke(DesignTokens.Colors.primary.opacity(DesignTokens.Opacity.veryTransparent), lineWidth: DesignTokens.Border.thick)
+        )
+        .foregroundColor(DesignTokens.Colors.primary)
     }
 
     private var outlineContent: some View {
         HStack(spacing: DesignTokens.Spacing.sm) {
-            iconView
+            if isLoading {
+                ProgressView()
+                    .tint(DesignTokens.Colors.primary)
+            } else {
+                iconView
+            }
             Text(title)
                 .font(DesignTokens.Typography.bodyBold)
         }
@@ -109,7 +122,12 @@ public struct AppButton: View {
 
     private var ghostContent: some View {
         HStack(spacing: DesignTokens.Spacing.sm) {
-            iconView
+            if isLoading {
+                ProgressView()
+                    .tint(DesignTokens.Colors.primary)
+            } else {
+                iconView
+            }
             Text(title)
                 .font(DesignTokens.Typography.body)
         }
@@ -121,7 +139,7 @@ public struct AppButton: View {
     private var iconView: some View {
         if let icon {
             Image(systemName: icon)
-                .font(.system(size: DesignTokens.Sizing.iconSmall))
+                .font(DesignTokens.IconTypography.small)
         }
     }
 }

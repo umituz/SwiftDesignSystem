@@ -1,32 +1,40 @@
 import SwiftUI
 
-// MARK: - EmptyStateView
-public struct EmptyStateView: View {
+// MARK: - State Layout
+struct AppStateLayout: View {
     let icon: String
+    let iconColor: Color
     let title: String
     let message: String?
     let buttonTitle: String?
     let buttonAction: (() -> Void)?
+    let accessibilityLabel: String
 
-    public init(
-        icon: String = "tray",
+    init(
+        icon: String,
+        iconColor: Color,
         title: String,
         message: String? = nil,
         buttonTitle: String? = nil,
-        buttonAction: (() -> Void)? = nil
+        buttonAction: (() -> Void)? = nil,
+        accessibilityLabel: String? = nil
     ) {
         self.icon = icon
+        self.iconColor = iconColor
         self.title = title
         self.message = message
         self.buttonTitle = buttonTitle
         self.buttonAction = buttonAction
+        var parts = [title]
+        if let message { parts.append(message) }
+        self.accessibilityLabel = accessibilityLabel ?? SystemStrings.joinedDescription(parts)
     }
 
-    public var body: some View {
+    var body: some View {
         VStack(spacing: DesignTokens.Spacing.xl) {
             Image(systemName: icon)
-                .font(.system(size: DesignTokens.Sizing.iconHero))
-                .foregroundColor(DesignTokens.Colors.textTertiary)
+                .font(DesignTokens.IconTypography.hero)
+                .foregroundColor(iconColor)
                 .accessibilityHidden(true)
 
             VStack(spacing: DesignTokens.Spacing.xs) {
@@ -50,12 +58,6 @@ public struct EmptyStateView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(DesignTokens.Spacing.xxxl)
         .accessibilityElement(children: .combine)
-        .accessibilityLabel(accessibilityDescription)
-    }
-
-    private var accessibilityDescription: String {
-        var parts = [title]
-        if let message { parts.append(message) }
-        return parts.joined(separator: ". ")
+        .accessibilityLabel(accessibilityLabel)
     }
 }

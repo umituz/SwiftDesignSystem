@@ -44,19 +44,18 @@ public struct AppBadge: View {
             .padding(.vertical, DesignTokens.Spacing.xs)
             .background(color)
             .clipShape(Capsule())
-            .accessibilityLabel(text ?? "Badge")
+            .accessibilityLabel(text ?? SystemStrings.Accessibility.badge)
     }
 
     private var dotContent: some View {
         Circle()
             .fill(color)
             .frame(width: DesignTokens.Spacing.sm, height: DesignTokens.Spacing.sm)
-            .accessibilityLabel("Notification indicator")
+            .accessibilityLabel(SystemStrings.Accessibility.notificationIndicator)
     }
 
     private func countContent(_ value: Int) -> some View {
-        let display = value > 99 ? "99+" : "\(value)"
-        return Text(display)
+        Text(CountFormatter.displayString(for: value))
             .font(DesignTokens.Typography.caption2)
             .foregroundColor(DesignTokens.Colors.textOnPrimary)
             .frame(
@@ -65,6 +64,6 @@ public struct AppBadge: View {
             )
             .background(color)
             .clipShape(Circle())
-            .accessibilityLabel("\(value) items")
+            .accessibilityLabel(CountFormatter.accessibilityString(for: value))
     }
 }

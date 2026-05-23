@@ -1,7 +1,7 @@
 import SwiftUI
 
 // MARK: - AdaptiveContainer
-public struct AdaptiveContainer<Content: View>: View {
+public struct AppAdaptiveContainer<Content: View>: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     let content: Content
 
@@ -15,9 +15,14 @@ public struct AdaptiveContainer<Content: View>: View {
                 VStack(spacing: 0) {
                     content
                 }
-                .frame(maxWidth: horizontalSizeClass == .regular ? DesignTokens.Sizing.iPadMaxWidth : .infinity)
-                .frame(maxWidth: .infinity)
+                .frame(maxWidth: adaptiveMaxWidth)
+                .frame(maxWidth: .infinity, alignment: .center)
             }
         }
+    }
+
+    private var adaptiveMaxWidth: CGFloat {
+        AdaptiveValue(compact: CGFloat.infinity, regular: DesignTokens.Sizing.iPadMaxWidth)
+            .resolve(for: horizontalSizeClass)
     }
 }

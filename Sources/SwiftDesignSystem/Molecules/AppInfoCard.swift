@@ -1,7 +1,7 @@
 import SwiftUI
 
 // MARK: - InfoCard
-public struct InfoCard: View {
+public struct AppInfoCard: View {
     let title: String
     let message: String?
     let icon: String?
@@ -27,7 +27,7 @@ public struct InfoCard: View {
             HStack(spacing: DesignTokens.Spacing.sm) {
                 if let icon {
                     Image(systemName: icon)
-                        .font(.system(size: DesignTokens.Sizing.iconLarge))
+                        .font(DesignTokens.IconTypography.large)
                         .foregroundColor(DesignTokens.Colors.primary)
                         .accessibilityHidden(true)
                 }

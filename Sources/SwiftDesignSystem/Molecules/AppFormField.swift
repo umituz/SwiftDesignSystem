@@ -1,7 +1,7 @@
 import SwiftUI
 
 // MARK: - FormField
-public struct FormField<Content: View>: View {
+public struct AppFormField<Content: View>: View {
     let label: String
     let errorMessage: String?
     @ViewBuilder let content: () -> Content

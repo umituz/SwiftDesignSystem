@@ -1,7 +1,7 @@
 import SwiftUI
 
 // MARK: - Stat Card Style
-public enum StatCardStyle {
+public enum AppStatCardStyle {
     case compact
     case standard
     case large
@@ -9,18 +9,18 @@ public enum StatCardStyle {
 }
 
 // MARK: - StatCard
-public struct StatCard: View {
+public struct AppStatCard: View {
     let icon: String
     let value: String
     let label: String
-    let style: StatCardStyle
+    let style: AppStatCardStyle
     let color: Color
 
     public init(
         icon: String,
         value: String,
         label: String,
-        style: StatCardStyle = .standard,
+        style: AppStatCardStyle = .standard,
         color: Color = DesignTokens.Colors.primary
     ) {
         self.icon = icon
@@ -48,11 +48,11 @@ public struct StatCard: View {
     private var compactContent: some View {
         HStack(spacing: DesignTokens.Spacing.sm) {
             Image(systemName: icon)
-                .font(.system(size: DesignTokens.Sizing.iconMedium))
+                .font(DesignTokens.IconTypography.medium)
                 .foregroundColor(color)
                 .accessibilityHidden(true)
 
-            VStack(alignment: .leading, spacing: 2) {
+            VStack(alignment: .leading, spacing: DesignTokens.Spacing.tight) {
                 Text(value)
                     .font(DesignTokens.Typography.headline)
                     .foregroundColor(DesignTokens.Colors.textPrimary)
@@ -70,7 +70,7 @@ public struct StatCard: View {
     private var standardContent: some View {
         VStack(spacing: DesignTokens.Spacing.sm) {
             Image(systemName: icon)
-                .font(.system(size: DesignTokens.Sizing.iconLarge))
+                .font(DesignTokens.IconTypography.large)
                 .foregroundColor(color)
                 .accessibilityHidden(true)
 
@@ -96,7 +96,7 @@ public struct StatCard: View {
     private var largeContent: some View {
         VStack(spacing: DesignTokens.Spacing.md) {
             Image(systemName: icon)
-                .font(.system(size: DesignTokens.Sizing.iconXLarge))
+                .font(DesignTokens.IconTypography.xLarge)
                 .foregroundColor(color)
                 .accessibilityHidden(true)
 
@@ -122,7 +122,7 @@ public struct StatCard: View {
     private var gradientContent: some View {
         VStack(spacing: DesignTokens.Spacing.sm) {
             Image(systemName: icon)
-                .font(.system(size: DesignTokens.Sizing.iconLarge))
+                .font(DesignTokens.IconTypography.large)
                 .foregroundColor(DesignTokens.Colors.textOnPrimary)
                 .accessibilityHidden(true)
 

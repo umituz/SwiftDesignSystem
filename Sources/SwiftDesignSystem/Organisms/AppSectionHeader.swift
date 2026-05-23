@@ -1,7 +1,7 @@
 import SwiftUI
 
 // MARK: - SectionHeader
-public struct SectionHeader: View {
+public struct AppSectionHeader: View {
     let title: String
     let actionTitle: String?
     let action: (() -> Void)?

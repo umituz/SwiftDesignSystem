@@ -1,7 +1,7 @@
 import SwiftUI
 
 // MARK: - ListItem
-public struct ListItem: View {
+public struct AppListItem: View {
     let icon: String?
     let title: String
     let subtitle: String?
@@ -33,13 +33,13 @@ public struct ListItem: View {
             HStack(spacing: DesignTokens.Spacing.md) {
                 if let icon {
                     Image(systemName: icon)
-                        .font(.system(size: DesignTokens.Sizing.iconMedium))
+                        .font(DesignTokens.IconTypography.medium)
                         .foregroundColor(DesignTokens.Colors.primary)
                         .frame(width: DesignTokens.Sizing.iconLarge + DesignTokens.Spacing.xs)
                         .accessibilityHidden(true)
                 }
 
-                VStack(alignment: .leading, spacing: 2) {
+                VStack(alignment: .leading, spacing: DesignTokens.Spacing.tight) {
                     Text(title)
                         .font(DesignTokens.Typography.body)
                         .foregroundColor(DesignTokens.Colors.textPrimary)
@@ -60,8 +60,8 @@ public struct ListItem: View {
                 }
 
                 if showChevron {
-                    Image(systemName: "chevron.right")
-                        .font(.system(size: DesignTokens.Sizing.iconSmall, weight: .semibold))
+                    Image(systemName: SystemStrings.StateIcons.forwardNavigation)
+                        .font(DesignTokens.IconTypography.chevron)
                         .foregroundColor(DesignTokens.Colors.textTertiary)
                         .accessibilityHidden(true)
                 }
