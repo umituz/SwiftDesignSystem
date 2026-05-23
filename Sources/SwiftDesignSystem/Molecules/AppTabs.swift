@@ -76,12 +76,19 @@ public struct AppTabs: View {
             }
             .padding(.horizontal, DesignTokens.Spacing.md)
             .padding(.vertical, DesignTokens.Spacing.sm)
-            .background(StyleResolution.selectionBackground(isSelected: isActive, activeColor: color.opacity(DesignTokens.Opacity.veryTransparent)))
+            .background(tabBackground(isActive: isActive))
             .clipShape(RoundedRectangle(cornerRadius: DesignTokens.CornerRadius.md, style: .continuous))
         }
         .buttonStyle(.plain)
         .accessibilityLabel(item.title)
         .accessibilityAddTraits(.isButton)
         .accessibilityValue(StyleResolution.selectionLabel(isSelected: isActive))
+    }
+
+    private func tabBackground(isActive: Bool) -> Color {
+        StyleResolution.selectionBackground(
+            isSelected: isActive,
+            activeColor: color.opacity(DesignTokens.Opacity.veryTransparent)
+        )
     }
 }

@@ -1,7 +1,7 @@
 import SwiftUI
 
 // MARK: - Date Picker Style
-public enum AppDatePickerStyle {
+public enum AppDatePickerStyle: Sendable {
     case compact
     case graphical
     case wheel
@@ -13,20 +13,26 @@ public struct AppDatePicker: View {
     @Binding var date: Date
     let dateRange: ClosedRange<Date>?
     let style: AppDatePickerStyle
-    let tint: Color
+    let explicitTint: Color?
+
+    @Environment(\.designAccentColor) private var accentColor
 
     public init(
         label: String? = nil,
         date: Binding<Date>,
         in dateRange: ClosedRange<Date>? = nil,
         style: AppDatePickerStyle = .compact,
-        tint: Color = DesignTokens.Colors.primary
+        tint: Color? = nil
     ) {
         self.label = label
         self._date = date
         self.dateRange = dateRange
         self.style = style
-        self.tint = tint
+        self.explicitTint = tint
+    }
+
+    private var resolvedTint: Color {
+        explicitTint ?? accentColor
     }
 
     public var body: some View {
@@ -38,7 +44,7 @@ public struct AppDatePicker: View {
             }
 
             datePickerView
-                .tint(tint)
+                .tint(resolvedTint)
         }
         .onChange(of: date) { _, _ in
             AppHaptics.selectionChanged()

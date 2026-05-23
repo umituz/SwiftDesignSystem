@@ -66,10 +66,13 @@ private struct ResponsivePaddingModifier: ViewModifier {
 // MARK: - Keyboard Dismissal
 extension View {
     #if canImport(UIKit)
-    public func hideKeyboard() -> some View {
-        self.onTapGesture {
-            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-        }
+    public func hideKeyboard() {
+        UIApplication.shared.sendAction(
+            #selector(UIResponder.resignFirstResponder),
+            to: nil,
+            from: nil,
+            for: nil
+        )
     }
     #endif
 }

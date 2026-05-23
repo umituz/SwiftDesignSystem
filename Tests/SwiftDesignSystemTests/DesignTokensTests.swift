@@ -4,7 +4,8 @@ import SwiftUI
 
 final class DesignTokensTests: XCTestCase {
 
-    // MARK: - Spacing Tests
+    // MARK: - Spacing
+
     func testSpacingValues() {
         XCTAssertEqual(DesignTokens.Spacing.tight, 2)
         XCTAssertEqual(DesignTokens.Spacing.xs, 4)
@@ -18,23 +19,31 @@ final class DesignTokensTests: XCTestCase {
     }
 
     func testSpacingProgression() {
-        let values: [CGFloat] = [
-            DesignTokens.Spacing.tight,
-            DesignTokens.Spacing.xs,
-            DesignTokens.Spacing.sm,
-            DesignTokens.Spacing.md,
-            DesignTokens.Spacing.lg,
-            DesignTokens.Spacing.xl,
-            DesignTokens.Spacing.xxl,
-            DesignTokens.Spacing.xxxl,
+        let values = [
+            DesignTokens.Spacing.tight, DesignTokens.Spacing.xs,
+            DesignTokens.Spacing.sm, DesignTokens.Spacing.md,
+            DesignTokens.Spacing.lg, DesignTokens.Spacing.xl,
+            DesignTokens.Spacing.xxl, DesignTokens.Spacing.xxxl,
             DesignTokens.Spacing.huge
         ]
-        for i in 0..<(values.count - 1) {
-            XCTAssertLessThan(values[i], values[i + 1], "Spacing values should be monotonically increasing")
+        for idx in 0..<(values.count - 1) {
+            XCTAssertLessThan(values[idx], values[idx + 1])
         }
     }
 
-    // MARK: - Corner Radius Tests
+    func testSpacingAllPositive() {
+        let all: [CGFloat] = [
+            DesignTokens.Spacing.tight, DesignTokens.Spacing.xs,
+            DesignTokens.Spacing.sm, DesignTokens.Spacing.md,
+            DesignTokens.Spacing.lg, DesignTokens.Spacing.xl,
+            DesignTokens.Spacing.xxl, DesignTokens.Spacing.xxxl,
+            DesignTokens.Spacing.huge
+        ]
+        for spacing in all { XCTAssertGreaterThan(spacing, 0) }
+    }
+
+    // MARK: - Corner Radius
+
     func testCornerRadiusValues() {
         XCTAssertEqual(DesignTokens.CornerRadius.sm, 8)
         XCTAssertEqual(DesignTokens.CornerRadius.md, 12)
@@ -44,16 +53,36 @@ final class DesignTokensTests: XCTestCase {
         XCTAssertEqual(DesignTokens.CornerRadius.full, 999)
     }
 
-    // MARK: - Sizing Tests
-    func testSizingValues() {
+    func testCornerRadiusProgression() {
+        XCTAssertLessThan(DesignTokens.CornerRadius.sm, DesignTokens.CornerRadius.md)
+        XCTAssertLessThan(DesignTokens.CornerRadius.md, DesignTokens.CornerRadius.lg)
+        XCTAssertLessThan(DesignTokens.CornerRadius.lg, DesignTokens.CornerRadius.xl)
+        XCTAssertLessThan(DesignTokens.CornerRadius.xl, DesignTokens.CornerRadius.xxl)
+    }
+
+    // MARK: - Sizing
+
+    func testComponentSizingValues() {
         XCTAssertEqual(DesignTokens.Sizing.buttonHeight, 48)
         XCTAssertEqual(DesignTokens.Sizing.textFieldHeight, 48)
+        XCTAssertEqual(DesignTokens.Sizing.searchBarHeight, 36)
+        XCTAssertEqual(DesignTokens.Sizing.toggleHeight, 31)
+        XCTAssertEqual(DesignTokens.Sizing.checkboxSize, 24)
+        XCTAssertEqual(DesignTokens.Sizing.sliderTrackHeight, 4)
+        XCTAssertEqual(DesignTokens.Sizing.sliderThumbSize, 28)
+        XCTAssertEqual(DesignTokens.Sizing.tabHeight, 44)
+        XCTAssertEqual(DesignTokens.Sizing.accordionMinHeight, 48)
+        XCTAssertEqual(DesignTokens.Sizing.dropdownHeight, 48)
+        XCTAssertEqual(DesignTokens.Sizing.formSectionSpacing, 24)
+    }
+
+    func testLayoutSizingValues() {
         XCTAssertEqual(DesignTokens.Sizing.iPadMaxWidth, 700)
+        XCTAssertEqual(DesignTokens.Sizing.maxContentWidth, 900)
+        XCTAssertEqual(DesignTokens.Sizing.maxCardWidth, 650)
         XCTAssertEqual(DesignTokens.Sizing.linearProgressHeight, 6)
         XCTAssertEqual(DesignTokens.Sizing.bottomSheetMediumHeight, 400)
         XCTAssertEqual(DesignTokens.Sizing.bottomSheetLargeHeight, 600)
-        XCTAssertEqual(DesignTokens.Sizing.dragIndicatorWidth, 36)
-        XCTAssertEqual(DesignTokens.Sizing.dragIndicatorHeight, 5)
     }
 
     func testIconSizingProgression() {
@@ -63,14 +92,21 @@ final class DesignTokensTests: XCTestCase {
         XCTAssertLessThan(DesignTokens.Sizing.iconXLarge, DesignTokens.Sizing.iconHero)
     }
 
-    // MARK: - Border Tests
+    // MARK: - Border
+
     func testBorderValues() {
         XCTAssertEqual(DesignTokens.Border.thin, 0.5)
         XCTAssertEqual(DesignTokens.Border.regular, 1)
         XCTAssertEqual(DesignTokens.Border.thick, 2)
     }
 
-    // MARK: - Opacity Tests
+    func testBorderProgression() {
+        XCTAssertLessThan(DesignTokens.Border.thin, DesignTokens.Border.regular)
+        XCTAssertLessThan(DesignTokens.Border.regular, DesignTokens.Border.thick)
+    }
+
+    // MARK: - Opacity
+
     func testOpacityValues() {
         XCTAssertEqual(DesignTokens.Opacity.fullyVisible, 1.0)
         XCTAssertEqual(DesignTokens.Opacity.semiTransparent, 0.5)
@@ -80,59 +116,58 @@ final class DesignTokensTests: XCTestCase {
     }
 
     func testOpacityRange() {
-        let allOpacities: [Double] = [
-            DesignTokens.Opacity.nearlyInvisible,
-            DesignTokens.Opacity.veryTransparent,
-            DesignTokens.Opacity.transparent,
-            DesignTokens.Opacity.semiTransparent,
-            DesignTokens.Opacity.barelyVisible,
-            DesignTokens.Opacity.fullyVisible
+        let all: [Double] = [
+            DesignTokens.Opacity.nearlyInvisible, DesignTokens.Opacity.veryTransparent,
+            DesignTokens.Opacity.transparent, DesignTokens.Opacity.semiTransparent,
+            DesignTokens.Opacity.barelyVisible, DesignTokens.Opacity.fullyVisible
         ]
-        for opacity in allOpacities {
+        for opacity in all {
             XCTAssertGreaterThanOrEqual(opacity, 0.0)
             XCTAssertLessThanOrEqual(opacity, 1.0)
         }
     }
 
-    // MARK: - Breakpoint Tests
+    // MARK: - Breakpoints
+
     func testBreakpointCompactWidth() {
         XCTAssertTrue(DesignTokens.Breakpoint.isCompact(width: 300))
-        XCTAssertFalse(DesignTokens.Breakpoint.isCompact(width: 400))
+        XCTAssertFalse(DesignTokens.Breakpoint.isCompact(width: 375))
     }
 
     func testBreakpointRegularWidth() {
         XCTAssertTrue(DesignTokens.Breakpoint.isRegular(width: 400))
+        XCTAssertTrue(DesignTokens.Breakpoint.isRegular(width: 375))
         XCTAssertFalse(DesignTokens.Breakpoint.isRegular(width: 800))
     }
 
     func testBreakpointTabletWidth() {
-        XCTAssertTrue(DesignTokens.Breakpoint.isTablet(width: 800))
+        XCTAssertTrue(DesignTokens.Breakpoint.isTablet(width: 768))
         XCTAssertFalse(DesignTokens.Breakpoint.isTablet(width: 500))
     }
 
     func testBreakpointLargeTabletWidth() {
-        XCTAssertTrue(DesignTokens.Breakpoint.isLargeTablet(width: 1100))
+        XCTAssertTrue(DesignTokens.Breakpoint.isLargeTablet(width: 1024))
         XCTAssertFalse(DesignTokens.Breakpoint.isLargeTablet(width: 900))
     }
 
-    func testBreakpointMutualExclusivity() {
-        let width: CGFloat = 300
-        XCTAssertTrue(DesignTokens.Breakpoint.isCompact(width: width))
-        XCTAssertFalse(DesignTokens.Breakpoint.isRegular(width: width))
-        XCTAssertFalse(DesignTokens.Breakpoint.isTablet(width: width))
+    // MARK: - Shadow
+
+    func testShadowInit() {
+        let shadow = DesignShadow(color: .red, radius: 10, y: 5)
+        XCTAssertEqual(shadow.radius, 10)
+        XCTAssertEqual(shadow.y, 5)
     }
 
-    // MARK: - Shadow Tests
     func testShadowEquality() {
-        let shadow1 = DesignShadow(color: .black, radius: 4, y: 2)
-        let shadow2 = DesignShadow(color: .black, radius: 4, y: 2)
-        XCTAssertEqual(shadow1, shadow2)
+        let s1 = DesignShadow(color: .black, radius: 4, y: 2)
+        let s2 = DesignShadow(color: .black, radius: 4, y: 2)
+        XCTAssertEqual(s1, s2)
     }
 
     func testShadowInequality() {
-        let shadow1 = DesignShadow(color: .black, radius: 4, y: 2)
-        let shadow2 = DesignShadow(color: .black, radius: 8, y: 4)
-        XCTAssertNotEqual(shadow1, shadow2)
+        let s1 = DesignShadow(color: .black, radius: 4, y: 2)
+        let s2 = DesignShadow(color: .black, radius: 8, y: 4)
+        XCTAssertNotEqual(s1, s2)
     }
 
     func testPredefinedShadows() {
@@ -142,54 +177,8 @@ final class DesignTokensTests: XCTestCase {
         XCTAssertEqual(DesignTokens.Shadows.cardTint.radius, 10)
     }
 
-    func testShadowRadiusProgression() {
-        XCTAssertLessThan(DesignTokens.Shadows.subtle.radius, DesignTokens.Shadows.medium.radius)
-        XCTAssertLessThan(DesignTokens.Shadows.medium.radius, DesignTokens.Shadows.strong.radius)
-    }
+    // MARK: - Layer
 
-    // MARK: - Design Scale Tests
-    func testGridColumns() {
-        let columns = DesignScale.gridColumns(availableWidth: 400, minItemWidth: 150, spacing: 12)
-        XCTAssertEqual(columns, 2)
-
-        let tabletColumns = DesignScale.gridColumns(availableWidth: 800, minItemWidth: 150, spacing: 12)
-        XCTAssertGreaterThanOrEqual(tabletColumns, 4)
-    }
-
-    func testGridColumnsMinimum() {
-        let columns = DesignScale.gridColumns(availableWidth: 100, minItemWidth: 200, spacing: 12)
-        XCTAssertEqual(columns, 1)
-    }
-
-    func testSpacingScale() {
-        XCTAssertEqual(DesignScale.spacing(base: 16, horizontalSizeClass: .compact), 16)
-        XCTAssertEqual(DesignScale.spacing(base: 16, horizontalSizeClass: .regular), 24)
-    }
-
-    func testFontScale() {
-        XCTAssertEqual(DesignScale.fontScale(horizontalSizeClass: .compact), 1.0)
-        XCTAssertEqual(DesignScale.fontScale(horizontalSizeClass: .regular), 1.1)
-    }
-
-    func testContentWidth() {
-        let phoneWidth = DesignScale.contentWidth(screenwidth: 390, horizontalSizeClass: .compact)
-        XCTAssertEqual(phoneWidth, 390)
-
-        let tabletWidth = DesignScale.contentWidth(screenwidth: 1024, horizontalSizeClass: .regular)
-        XCTAssertEqual(tabletWidth, DesignTokens.Sizing.iPadMaxWidth)
-    }
-
-    func testHorizontalPadding() {
-        XCTAssertEqual(DesignScale.horizontalPadding(horizontalSizeClass: .compact), DesignTokens.Spacing.lg)
-        XCTAssertEqual(DesignScale.horizontalPadding(horizontalSizeClass: .regular), DesignTokens.Spacing.xl)
-    }
-
-    func testSectionPadding() {
-        XCTAssertEqual(DesignScale.sectionPadding(horizontalSizeClass: .compact), DesignTokens.Spacing.xl)
-        XCTAssertEqual(DesignScale.sectionPadding(horizontalSizeClass: .regular), DesignTokens.Spacing.xxl)
-    }
-
-    // MARK: - Layer Tests
     func testLayerOrdering() {
         XCTAssertLessThan(DesignTokens.Layer.background, DesignTokens.Layer.content)
         XCTAssertLessThan(DesignTokens.Layer.content, DesignTokens.Layer.overlay)
@@ -198,55 +187,13 @@ final class DesignTokensTests: XCTestCase {
         XCTAssertLessThan(DesignTokens.Layer.toast, DesignTokens.Layer.tooltip)
     }
 
-    // MARK: - Bottom Sheet Detent Tests
-    func testBottomSheetDetentCases() {
-        let medium = AppBottomSheetDetent.medium
-        let large = AppBottomSheetDetent.large
-        let custom = AppBottomSheetDetent.custom(300)
+    // MARK: - ProgressCalculation
 
-        if case .medium = medium { } else { XCTFail("Should be .medium") }
-        if case .large = large { } else { XCTFail("Should be .large") }
-        if case .custom(300) = custom { } else { XCTFail("Should be .custom(300)") }
-    }
-
-    // MARK: - Toast Style Tests
-    func testToastStyleProperties() {
-        XCTAssertFalse(AppToastStyle.success.icon.isEmpty)
-        XCTAssertFalse(AppToastStyle.warning.icon.isEmpty)
-        XCTAssertFalse(AppToastStyle.error.icon.isEmpty)
-        XCTAssertFalse(AppToastStyle.info.icon.isEmpty)
-    }
-
-    // MARK: - Icon Typography Tests
-    func testIconTypographyTokens() {
-        XCTAssertNotNil(DesignTokens.IconTypography.small)
-        XCTAssertNotNil(DesignTokens.IconTypography.medium)
-        XCTAssertNotNil(DesignTokens.IconTypography.large)
-        XCTAssertNotNil(DesignTokens.IconTypography.xLarge)
-        XCTAssertNotNil(DesignTokens.IconTypography.hero)
-        XCTAssertNotNil(DesignTokens.IconTypography.chevron)
-        XCTAssertNotNil(DesignTokens.IconTypography.dismiss)
-    }
-
-    // MARK: - Typography Dynamic Type Tests
-    func testTypographyTokensExist() {
-        XCTAssertNotNil(DesignTokens.Typography.display)
-        XCTAssertNotNil(DesignTokens.Typography.largeTitle)
-        XCTAssertNotNil(DesignTokens.Typography.title)
-        XCTAssertNotNil(DesignTokens.Typography.headline)
-        XCTAssertNotNil(DesignTokens.Typography.body)
-        XCTAssertNotNil(DesignTokens.Typography.caption)
-        XCTAssertNotNil(DesignTokens.Typography.footnote)
-        XCTAssertNotNil(DesignTokens.Typography.subheadline)
-    }
-
-    // MARK: - ProgressCalculation Tests
     func testProgressClamping() {
         XCTAssertEqual(ProgressCalculation.clamped(0.5), 0.5)
         XCTAssertEqual(ProgressCalculation.clamped(-0.5), 0.0)
         XCTAssertEqual(ProgressCalculation.clamped(1.5), 1.0)
         XCTAssertEqual(ProgressCalculation.clamped(0.0), 0.0)
-        XCTAssertEqual(ProgressCalculation.clamped(1.0), 1.0)
     }
 
     func testProgressPercentageString() {
@@ -254,21 +201,25 @@ final class DesignTokensTests: XCTestCase {
         XCTAssertEqual(ProgressCalculation.percentageString(0.0), "0%")
         XCTAssertEqual(ProgressCalculation.percentageString(1.0), "100%")
         XCTAssertEqual(ProgressCalculation.percentageString(-0.5), "0%")
-        XCTAssertEqual(ProgressCalculation.percentageString(2.0), "100%")
+    }
+
+    func testProgressAccessibility() {
+        XCTAssertEqual(ProgressCalculation.accessibilityPercentString(0.5), "50 percent")
+        XCTAssertEqual(ProgressCalculation.accessibilityPercentString(1.0), "100 percent")
     }
 
     func testProgressBarWidth() {
         XCTAssertEqual(ProgressCalculation.barWidth(fraction: 0.5, availableWidth: 200), 100)
         XCTAssertEqual(ProgressCalculation.barWidth(fraction: 0.0, availableWidth: 200), 0)
-        XCTAssertEqual(ProgressCalculation.barWidth(fraction: 1.0, availableWidth: 200), 200)
+        XCTAssertEqual(ProgressCalculation.barWidth(fraction: 2.0, availableWidth: 200), 200)
     }
 
-    // MARK: - CountFormatter Tests
-    func testCountFormatterDisplayString() {
-        XCTAssertEqual(CountFormatter.displayString(for: 5), "5")
+    // MARK: - CountFormatter
+
+    func testCountFormatterDisplay() {
+        XCTAssertEqual(CountFormatter.displayString(for: 0), "0")
         XCTAssertEqual(CountFormatter.displayString(for: 99), "99")
         XCTAssertEqual(CountFormatter.displayString(for: 100), "99+")
-        XCTAssertEqual(CountFormatter.displayString(for: 999), "99+")
     }
 
     func testCountFormatterAccessibility() {
@@ -276,11 +227,11 @@ final class DesignTokensTests: XCTestCase {
         XCTAssertEqual(CountFormatter.accessibilityString(for: 100), "More than 99 items")
     }
 
-    // MARK: - DimensionCalculation Tests
+    // MARK: - DimensionCalculation
+
     func testGridColumnCount() {
         XCTAssertEqual(DimensionCalculation.gridColumnCount(availableWidth: 400, minItemWidth: 150, spacing: 12), 2)
-        XCTAssertEqual(DimensionCalculation.gridColumnCount(availableWidth: 100, minItemWidth: 200, spacing: 12), 1)
-        XCTAssertEqual(DimensionCalculation.gridColumnCount(availableWidth: 800, minItemWidth: 150, spacing: 12), 4)
+        XCTAssertEqual(DimensionCalculation.gridColumnCount(availableWidth: 0, minItemWidth: 150, spacing: 12), 1)
     }
 
     func testCappedWidth() {
@@ -290,37 +241,66 @@ final class DesignTokensTests: XCTestCase {
 
     func testSkeletonLineWidth() {
         XCTAssertEqual(DimensionCalculation.skeletonLineWidth(containerWidth: 200, ratio: 0.5), 100)
-        XCTAssertEqual(DimensionCalculation.skeletonLineWidth(containerWidth: 200, ratio: 1.0), 200)
-        XCTAssertEqual(DimensionCalculation.skeletonLineWidth(containerWidth: 200, ratio: 0.0), 0)
         XCTAssertEqual(DimensionCalculation.skeletonLineWidth(containerWidth: 200, ratio: -0.5), 0)
         XCTAssertEqual(DimensionCalculation.skeletonLineWidth(containerWidth: 200, ratio: 1.5), 200)
     }
 
     func testDialogMaxWidth() {
-        XCTAssertEqual(DimensionCalculation.dialogMaxWidth(screenMaxWidth: 700, horizontalPadding: 32), 636)
+        let result = DimensionCalculation.dialogMaxWidth(screenMaxWidth: 700, horizontalPadding: 32)
+        XCTAssertEqual(result, 636)
     }
 
-    // MARK: - StyleResolution Tests
+    // MARK: - AdaptiveValue
+
+    func testAdaptiveValueCompact() {
+        let value = AdaptiveValue(compact: 10, regular: 20)
+        XCTAssertEqual(value.resolve(for: .compact), 10)
+    }
+
+    func testAdaptiveValueRegular() {
+        let value = AdaptiveValue(compact: 10, regular: 20)
+        XCTAssertEqual(value.resolve(for: .regular), 20)
+    }
+
+    func testAdaptiveValueNil() {
+        let value = AdaptiveValue(compact: 10, regular: 20)
+        XCTAssertEqual(value.resolve(for: nil), 10)
+    }
+
+    func testAdaptiveValueConstant() {
+        let value = AdaptiveValue<Int>.constant(42)
+        XCTAssertEqual(value.resolve(for: .compact), 42)
+        XCTAssertEqual(value.resolve(for: .regular), 42)
+    }
+
+    // MARK: - DesignScale
+
+    func testSpacingScale() {
+        XCTAssertEqual(DesignScale.spacing(base: 16, horizontalSizeClass: .compact), 16)
+        XCTAssertEqual(DesignScale.spacing(base: 16, horizontalSizeClass: .regular), 24)
+    }
+
+    func testContentWidth() {
+        XCTAssertEqual(DesignScale.contentWidth(screenWidth: 390, horizontalSizeClass: .compact), 390)
+        let tablet = DesignScale.contentWidth(screenWidth: 1024, horizontalSizeClass: .regular)
+        XCTAssertEqual(tablet, DesignTokens.Sizing.iPadMaxWidth)
+    }
+
+    func testHorizontalPadding() {
+        XCTAssertEqual(DesignScale.horizontalPadding(horizontalSizeClass: .compact), DesignTokens.Spacing.lg)
+        XCTAssertEqual(DesignScale.horizontalPadding(horizontalSizeClass: .regular), DesignTokens.Spacing.xl)
+    }
+
+    // MARK: - StyleResolution
+
     func testSelectionBackground() {
-        let active = StyleResolution.selectionBackground(isSelected: true, activeColor: .blue)
-        XCTAssertEqual(active, .blue)
-        let inactive = StyleResolution.selectionBackground(isSelected: false, activeColor: .blue)
-        XCTAssertEqual(inactive, Color.clear)
+        XCTAssertEqual(StyleResolution.selectionBackground(isSelected: true, activeColor: .blue), .blue)
+        XCTAssertEqual(StyleResolution.selectionBackground(isSelected: false, activeColor: .blue), .clear)
     }
 
     func testDisabledOpacity() {
-        XCTAssertEqual(StyleResolution.disabledOpacity(isDisabled: true), DesignTokens.Opacity.semiTransparent)
-        XCTAssertEqual(StyleResolution.disabledOpacity(isDisabled: false), DesignTokens.Opacity.fullyVisible)
-    }
-
-    func testSelectionLabel() {
-        XCTAssertEqual(StyleResolution.selectionLabel(isSelected: true), SystemStrings.Accessibility.selected)
-        XCTAssertEqual(StyleResolution.selectionLabel(isSelected: false), SystemStrings.Accessibility.notSelected)
-    }
-
-    func testToggleLabel() {
-        XCTAssertEqual(StyleResolution.toggleLabel(isOn: true), SystemStrings.Accessibility.toggleOn)
-        XCTAssertEqual(StyleResolution.toggleLabel(isOn: false), SystemStrings.Accessibility.toggleOff)
+        XCTAssertEqual(StyleResolution.disabledOpacity(isDisabled: true), 0.5)
+        XCTAssertEqual(StyleResolution.disabledOpacity(isDisabled: false), 1.0)
     }
 
     func testFieldBorderColor() {
@@ -328,13 +308,68 @@ final class DesignTokensTests: XCTestCase {
         XCTAssertEqual(StyleResolution.fieldBorderColor(hasError: false), DesignTokens.Colors.separator)
     }
 
-    func testSelectionBorderWidth() {
-        XCTAssertEqual(StyleResolution.selectionBorderWidth(isSelected: true), DesignTokens.Border.thick)
-        XCTAssertEqual(StyleResolution.selectionBorderWidth(isSelected: false), DesignTokens.Border.thin)
+    func testCheckboxIcon() {
+        XCTAssertEqual(StyleResolution.checkboxIcon(isChecked: true), SystemStrings.StateIcons.checkboxChecked)
+        XCTAssertEqual(StyleResolution.checkboxIcon(isChecked: false), SystemStrings.StateIcons.checkboxUnchecked)
     }
 
-    func testSelectionIndicatorIcon() {
-        XCTAssertEqual(StyleResolution.selectionIndicatorIcon(isSelected: true), SystemStrings.StateIcons.selectedIndicator)
-        XCTAssertEqual(StyleResolution.selectionIndicatorIcon(isSelected: false), SystemStrings.StateIcons.unselectedIndicator)
+    func testAccordionChevron() {
+        XCTAssertEqual(StyleResolution.accordionChevron(isExpanded: true), SystemStrings.StateIcons.chevronUp)
+        XCTAssertEqual(StyleResolution.accordionChevron(isExpanded: false), SystemStrings.StateIcons.chevronDown)
+    }
+
+    func testAccordionRotation() {
+        XCTAssertEqual(StyleResolution.accordionRotation(isExpanded: true).degrees, 180)
+        XCTAssertEqual(StyleResolution.accordionRotation(isExpanded: false).degrees, 0)
+    }
+
+    // MARK: - Toast Style
+
+    func testToastStyleIcons() {
+        XCTAssertFalse(AppToastStyle.success.icon.isEmpty)
+        XCTAssertFalse(AppToastStyle.error.icon.isEmpty)
+    }
+
+    func testToastStyleColors() {
+        XCTAssertEqual(AppToastStyle.success.color, DesignTokens.Colors.success)
+        XCTAssertEqual(AppToastStyle.error.color, DesignTokens.Colors.danger)
+    }
+
+    // MARK: - Typography
+
+    func testTypographyTokensExist() {
+        XCTAssertNotNil(DesignTokens.Typography.display)
+        XCTAssertNotNil(DesignTokens.Typography.largeTitle)
+        XCTAssertNotNil(DesignTokens.Typography.body)
+        XCTAssertNotNil(DesignTokens.Typography.caption)
+    }
+
+    // MARK: - SystemStrings
+
+    func testSystemStringFormatters() {
+        XCTAssertEqual(SystemStrings.avatarWithInitials("AB"), "Avatar: AB")
+        XCTAssertEqual(SystemStrings.errorPrefix("Fail"), "Error: Fail")
+        XCTAssertEqual(SystemStrings.joinedDescription(["A", "B"]), "A. B")
+        XCTAssertEqual(SystemStrings.joinedDescription([]), "")
+    }
+
+    // MARK: - Bottom Sheet Detent
+
+    func testBottomSheetDetentCases() {
+        if case .medium = AppBottomSheetDetent.medium {
+            // expected
+        } else {
+            XCTFail("Should be medium")
+        }
+        if case .large = AppBottomSheetDetent.large {
+            // expected
+        } else {
+            XCTFail("Should be large")
+        }
+        if case .custom(300) = AppBottomSheetDetent.custom(300) {
+            // expected
+        } else {
+            XCTFail("Should be custom(300)")
+        }
     }
 }

@@ -25,10 +25,10 @@ public struct AppSectionHeader: View {
             Spacer()
 
             if let actionTitle, let action {
-                Button(action: {
+                Button {
                     AppHaptics.light()
                     action()
-                }) {
+                } label: {
                     Text(actionTitle)
                         .font(DesignTokens.Typography.subheadlineBold)
                         .foregroundColor(DesignTokens.Colors.primary)

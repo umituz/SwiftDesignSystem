@@ -1,7 +1,7 @@
 import SwiftUI
 
 // MARK: - Stat Card Style
-public enum AppStatCardStyle {
+public enum AppStatCardStyle: Sendable {
     case compact
     case standard
     case large

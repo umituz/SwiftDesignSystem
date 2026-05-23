@@ -23,22 +23,29 @@ public struct AppAlertDialog: View {
     }
 
     public var body: some View {
-        if isPresented {
-            ZStack {
-                DesignTokens.Colors.overlay
-                    .ignoresSafeArea()
-                    .onTapGesture {
-                        if let cancelAction = actions.first(where: { $0.style == .cancel }) {
-                            cancelAction.action()
-                        }
-                        dismiss()
-                    }
+        ZStack {
+            if isPresented {
+                overlayLayer
+                    .transition(.opacity)
+                    .zIndex(DesignTokens.Layer.modal)
 
                 dialogContent
                     .transition(.scale(scale: 0.9).combined(with: .opacity))
+                    .zIndex(DesignTokens.Layer.modal + 1)
             }
-            .zIndex(DesignTokens.Layer.modal)
         }
+        .animation(DesignTokens.Animations.standard, value: isPresented)
+    }
+
+    private var overlayLayer: some View {
+        DesignTokens.Colors.overlay
+            .ignoresSafeArea()
+            .onTapGesture {
+                if let cancelAction = actions.first(where: { $0.style == .cancel }) {
+                    cancelAction.action()
+                }
+                dismiss()
+            }
     }
 
     private var dialogContent: some View {
@@ -68,7 +75,10 @@ public struct AppAlertDialog: View {
             actionButtons
         }
         .padding(DesignTokens.Spacing.xl)
-        .frame(maxWidth: DimensionCalculation.dialogMaxWidth(screenMaxWidth: DesignTokens.Sizing.iPadMaxWidth, horizontalPadding: DesignTokens.Spacing.xxxl))
+        .frame(maxWidth: DimensionCalculation.dialogMaxWidth(
+            screenMaxWidth: DesignTokens.Sizing.iPadMaxWidth,
+            horizontalPadding: DesignTokens.Spacing.xxxl
+        ))
         .background(DesignTokens.Colors.background)
         .clipShape(RoundedRectangle(cornerRadius: DesignTokens.CornerRadius.xl, style: .continuous))
         .appShadow(DesignTokens.Shadows.strong)
@@ -135,9 +145,7 @@ public struct AppAlertDialog: View {
     }
 
     private func dismiss() {
-        withAnimation(DesignTokens.Animations.standard) {
-            isPresented = false
-        }
+        isPresented = false
     }
 
     private var accessibilityDescription: String {

@@ -1,12 +1,11 @@
 import SwiftUI
 
 // MARK: - Bottom Sheet Detent
-public enum AppBottomSheetDetent {
+public enum AppBottomSheetDetent: Sendable {
     case medium
     case large
     case custom(CGFloat)
 
-    @available(iOS 16.0, macOS 13.0, *)
     var presentationDetent: PresentationDetent {
         switch self {
         case .medium: return .medium

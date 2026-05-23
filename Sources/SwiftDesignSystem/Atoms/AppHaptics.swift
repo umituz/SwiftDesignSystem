@@ -7,41 +7,53 @@ import UIKit
 public enum AppHaptics {
 
     #if canImport(UIKit)
+    private static let lightGenerator = UIImpactFeedbackGenerator(style: .light)
+    private static let mediumGenerator = UIImpactFeedbackGenerator(style: .medium)
+    private static let heavyGenerator = UIImpactFeedbackGenerator(style: .heavy)
+    private static let selectionGenerator = UISelectionFeedbackGenerator()
+
+    public static func prepare() {
+        lightGenerator.prepare()
+        mediumGenerator.prepare()
+        heavyGenerator.prepare()
+        selectionGenerator.prepare()
+    }
+
     public static func light() {
-        let generator = UIImpactFeedbackGenerator(style: .light)
-        generator.impactOccurred()
+        lightGenerator.impactOccurred()
     }
 
     public static func medium() {
-        let generator = UIImpactFeedbackGenerator(style: .medium)
-        generator.impactOccurred()
+        mediumGenerator.impactOccurred()
     }
 
     public static func heavy() {
-        let generator = UIImpactFeedbackGenerator(style: .heavy)
-        generator.impactOccurred()
+        heavyGenerator.impactOccurred()
     }
 
     public static func success() {
         let generator = UINotificationFeedbackGenerator()
+        generator.prepare()
         generator.notificationOccurred(.success)
     }
 
     public static func warning() {
         let generator = UINotificationFeedbackGenerator()
+        generator.prepare()
         generator.notificationOccurred(.warning)
     }
 
     public static func error() {
         let generator = UINotificationFeedbackGenerator()
+        generator.prepare()
         generator.notificationOccurred(.error)
     }
 
     public static func selectionChanged() {
-        let generator = UISelectionFeedbackGenerator()
-        generator.selectionChanged()
+        selectionGenerator.selectionChanged()
     }
     #else
+    public static func prepare() {}
     public static func light() {}
     public static func medium() {}
     public static func heavy() {}

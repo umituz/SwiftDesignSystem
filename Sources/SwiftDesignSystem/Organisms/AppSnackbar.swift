@@ -1,55 +1,52 @@
 import SwiftUI
 
-// MARK: - Toast Style
-public enum AppToastStyle: Sendable {
+// MARK: - Snackbar Style
+public enum AppSnackbarStyle: Sendable {
+    case `default`
     case success
     case warning
     case error
-    case info
 
-    var icon: String {
+    var accentColor: Color {
         switch self {
-        case .success: return SystemStrings.ToastIcons.success
-        case .warning: return SystemStrings.ToastIcons.warning
-        case .error: return SystemStrings.ToastIcons.error
-        case .info: return SystemStrings.ToastIcons.info
-        }
-    }
-
-    var color: Color {
-        switch self {
+        case .default: return DesignTokens.Colors.primary
         case .success: return DesignTokens.Colors.success
         case .warning: return DesignTokens.Colors.warning
         case .error: return DesignTokens.Colors.danger
-        case .info: return DesignTokens.Colors.info
         }
     }
 
-    var accessibilityName: String {
+    var iconName: String? {
         switch self {
-        case .success: return SystemStrings.ToastStyleNames.success
-        case .warning: return SystemStrings.ToastStyleNames.warning
-        case .error: return SystemStrings.ToastStyleNames.error
-        case .info: return SystemStrings.ToastStyleNames.info
+        case .default: return nil
+        case .success: return SystemStrings.ToastIcons.success
+        case .warning: return SystemStrings.ToastIcons.warning
+        case .error: return SystemStrings.ToastIcons.error
         }
     }
 }
 
-// MARK: - Toast
-public struct AppToast: View {
+// MARK: - Snackbar
+public struct AppSnackbar: View {
     let message: String
-    let style: AppToastStyle
+    let style: AppSnackbarStyle
+    let actionTitle: String?
+    let action: (() -> Void)?
     let isPresented: Bool
     let onDismiss: (() -> Void)?
 
     public init(
         message: String,
-        style: AppToastStyle = .info,
+        style: AppSnackbarStyle = .default,
+        actionTitle: String? = nil,
+        action: (() -> Void)? = nil,
         isPresented: Bool,
         onDismiss: (() -> Void)? = nil
     ) {
         self.message = message
         self.style = style
+        self.actionTitle = actionTitle
+        self.action = action
         self.isPresented = isPresented
         self.onDismiss = onDismiss
     }
@@ -57,71 +54,83 @@ public struct AppToast: View {
     public var body: some View {
         if isPresented {
             VStack {
-                toastContent
                 Spacer()
+                snackbarContent
+                    .padding(.horizontal, DesignTokens.Spacing.lg)
+                    .padding(.bottom, DesignTokens.Spacing.lg)
             }
-            .padding(.top, DesignTokens.Spacing.xl)
-            .safeAreaInset(edge: .top) { Color.clear.frame(height: 0) }
-            .padding(.horizontal, DesignTokens.Spacing.lg)
-            .transition(.move(edge: .top).combined(with: .opacity))
+            .transition(.move(edge: .bottom).combined(with: .opacity))
         }
     }
 
-    private var toastContent: some View {
+    private var snackbarContent: some View {
         HStack(spacing: DesignTokens.Spacing.md) {
-            Image(systemName: style.icon)
-                .font(DesignTokens.IconTypography.large)
-                .foregroundColor(style.color)
-                .accessibilityHidden(true)
+            if let iconName = style.iconName {
+                Image(systemName: iconName)
+                    .font(DesignTokens.IconTypography.medium)
+                    .foregroundColor(style.accentColor)
+                    .accessibilityHidden(true)
+            }
 
             Text(message)
                 .font(DesignTokens.Typography.subheadline)
                 .foregroundColor(DesignTokens.Colors.textPrimary)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-            Button {
-                onDismiss?()
-            } label: {
-                Image(systemName: SystemStrings.StateIcons.dismiss)
-                    .font(DesignTokens.IconTypography.dismiss)
-                    .foregroundColor(DesignTokens.Colors.textTertiary)
+            if let actionTitle, let action {
+                Button {
+                    action()
+                } label: {
+                    Text(actionTitle)
+                        .font(DesignTokens.Typography.subheadlineBold)
+                        .foregroundColor(style.accentColor)
+                }
+                .accessibilityLabel(actionTitle)
+                .accessibilityAddTraits(.isButton)
             }
-            .accessibilityLabel(SystemStrings.Accessibility.dismissToast)
         }
         .padding(DesignTokens.Spacing.lg)
-        .background(.ultraThinMaterial)
+        .background(DesignTokens.Colors.surface)
         .clipShape(RoundedRectangle(cornerRadius: DesignTokens.CornerRadius.lg, style: .continuous))
         .appShadow(DesignTokens.Shadows.medium)
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(style.accessibilityName): \(message)")
+        .accessibilityLabel(message)
     }
 }
 
-// MARK: - Toast Modifier
-public struct AppToastModifier: ViewModifier {
+// MARK: - Snackbar Modifier
+public struct AppSnackbarModifier: ViewModifier {
     @Binding var isPresented: Bool
     let message: String
-    let style: AppToastStyle
+    let style: AppSnackbarStyle
+    let actionTitle: String?
+    let action: (() -> Void)?
     let duration: TimeInterval
 
     public init(
         isPresented: Binding<Bool>,
         message: String,
-        style: AppToastStyle = .info,
-        duration: TimeInterval = 3.0
+        style: AppSnackbarStyle = .default,
+        actionTitle: String? = nil,
+        action: (() -> Void)? = nil,
+        duration: TimeInterval = 4.0
     ) {
         self._isPresented = isPresented
         self.message = message
         self.style = style
+        self.actionTitle = actionTitle
+        self.action = action
         self.duration = duration
     }
 
     public func body(content: Content) -> some View {
         content
-            .overlay(alignment: .top) {
-                AppToast(
+            .overlay(alignment: .bottom) {
+                AppSnackbar(
                     message: message,
                     style: style,
+                    actionTitle: actionTitle,
+                    action: action,
                     isPresented: isPresented,
                     onDismiss: { dismiss() }
                 )
@@ -148,16 +157,20 @@ public struct AppToastModifier: ViewModifier {
 }
 
 extension View {
-    public func toast(
+    public func snackbar(
         isPresented: Binding<Bool>,
         message: String,
-        style: AppToastStyle = .info,
-        duration: TimeInterval = 3.0
+        style: AppSnackbarStyle = .default,
+        actionTitle: String? = nil,
+        action: (() -> Void)? = nil,
+        duration: TimeInterval = 4.0
     ) -> some View {
-        self.modifier(AppToastModifier(
+        self.modifier(AppSnackbarModifier(
             isPresented: isPresented,
             message: message,
             style: style,
+            actionTitle: actionTitle,
+            action: action,
             duration: duration
         ))
     }

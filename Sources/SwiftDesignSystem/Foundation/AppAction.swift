@@ -1,7 +1,7 @@
 import SwiftUI
 
 // MARK: - Action Style
-public enum AppActionStyle {
+public enum AppActionStyle: Sendable {
     case `default`
     case destructive
     case cancel

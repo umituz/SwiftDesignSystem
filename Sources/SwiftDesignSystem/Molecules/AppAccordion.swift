@@ -5,21 +5,27 @@ public struct AppAccordion<Content: View>: View {
     let title: String
     let icon: String?
     @Binding var isExpanded: Bool
-    let tint: Color
+    let explicitTint: Color?
     @ViewBuilder let content: () -> Content
+
+    @Environment(\.designAccentColor) private var accentColor
 
     public init(
         title: String,
         icon: String? = nil,
         isExpanded: Binding<Bool> = .constant(false),
-        tint: Color = DesignTokens.Colors.primary,
+        tint: Color? = nil,
         @ViewBuilder content: @escaping () -> Content
     ) {
         self.title = title
         self.icon = icon
         self._isExpanded = isExpanded
-        self.tint = tint
+        self.explicitTint = tint
         self.content = content
+    }
+
+    private var resolvedTint: Color {
+        explicitTint ?? accentColor
     }
 
     public var body: some View {
@@ -50,7 +56,7 @@ public struct AppAccordion<Content: View>: View {
                 if let icon {
                     Image(systemName: icon)
                         .font(DesignTokens.IconTypography.medium)
-                        .foregroundColor(tint)
+                        .foregroundColor(resolvedTint)
                         .accessibilityHidden(true)
                 }
 

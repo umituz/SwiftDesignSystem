@@ -1,7 +1,7 @@
 import SwiftUI
 
 // MARK: - Skeleton Shape
-public enum AppSkeletonShape {
+public enum AppSkeletonShape: Sendable {
     case rectangle
     case circle
     case rounded(CGFloat)

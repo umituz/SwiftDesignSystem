@@ -4,16 +4,22 @@ import SwiftUI
 public struct AppSegmentedControl: View {
     let segments: [String]
     @Binding var selectedIndex: Int
-    let color: Color
+    let explicitColor: Color?
+
+    @Environment(\.designAccentColor) private var accentColor
 
     public init(
         segments: [String],
         selectedIndex: Binding<Int>,
-        color: Color = DesignTokens.Colors.primary
+        color: Color? = nil
     ) {
         self.segments = segments
         self._selectedIndex = selectedIndex
-        self.color = color
+        self.explicitColor = color
+    }
+
+    private var resolvedColor: Color {
+        explicitColor ?? accentColor
     }
 
     public var body: some View {
@@ -40,13 +46,29 @@ public struct AppSegmentedControl: View {
                 .font(DesignTokens.Typography.subheadlineBold)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, DesignTokens.Spacing.sm)
-                .background(StyleResolution.selectionBackground(isSelected: isActive, activeColor: color))
-                .foregroundColor(StyleResolution.selectionForeground(isSelected: isActive, activeColor: color, inactiveColor: DesignTokens.Colors.textSecondary))
-                .clipShape(RoundedRectangle(cornerRadius: DesignTokens.CornerRadius.md, style: .continuous))
+                .background(segmentBackground(isActive: isActive))
+                .foregroundColor(segmentForeground(isActive: isActive))
+                .clipShape(segmentClipShape)
         }
         .buttonStyle(.plain)
         .accessibilityLabel(title)
         .accessibilityAddTraits(.isButton)
         .accessibilityValue(StyleResolution.selectionLabel(isSelected: isActive))
+    }
+
+    private func segmentBackground(isActive: Bool) -> Color {
+        StyleResolution.selectionBackground(isSelected: isActive, activeColor: resolvedColor)
+    }
+
+    private func segmentForeground(isActive: Bool) -> Color {
+        StyleResolution.selectionForeground(
+            isSelected: isActive,
+            activeColor: resolvedColor,
+            inactiveColor: DesignTokens.Colors.textSecondary
+        )
+    }
+
+    private var segmentClipShape: some Shape {
+        RoundedRectangle(cornerRadius: DesignTokens.CornerRadius.md, style: .continuous)
     }
 }

@@ -32,13 +32,13 @@ public enum DesignScale {
 
     // MARK: - Content Width
     public static func contentWidth(
-        screenwidth: CGFloat,
+        screenWidth: CGFloat,
         horizontalSizeClass: UserInterfaceSizeClass?
     ) -> CGFloat {
         if horizontalSizeClass == .regular {
-            return DimensionCalculation.cappedWidth(width: screenwidth, maxWidth: DesignTokens.Sizing.iPadMaxWidth)
+            return DimensionCalculation.cappedWidth(width: screenWidth, maxWidth: DesignTokens.Sizing.iPadMaxWidth)
         }
-        return screenwidth
+        return screenWidth
     }
 
     // MARK: - Padding

@@ -1,7 +1,7 @@
 import SwiftUI
 
 // MARK: - Badge Style
-public enum AppBadgeStyle {
+public enum AppBadgeStyle: Sendable {
     case pill
     case dot
     case count(Int)

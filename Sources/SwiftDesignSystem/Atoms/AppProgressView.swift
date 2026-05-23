@@ -1,7 +1,7 @@
 import SwiftUI
 
 // MARK: - Progress Style
-public enum AppProgressStyle {
+public enum AppProgressStyle: Sendable {
     case linear
     case circular
 }

@@ -6,20 +6,26 @@ public struct AppToggleRow: View {
     let subtitle: String?
     let icon: String?
     @Binding var isOn: Bool
-    let tint: Color
+    let explicitTint: Color?
+
+    @Environment(\.designAccentColor) private var accentColor
 
     public init(
         title: String,
         subtitle: String? = nil,
         icon: String? = nil,
         isOn: Binding<Bool>,
-        tint: Color = DesignTokens.Colors.primary
+        tint: Color? = nil
     ) {
         self.title = title
         self.subtitle = subtitle
         self.icon = icon
         self._isOn = isOn
-        self.tint = tint
+        self.explicitTint = tint
+    }
+
+    private var resolvedTint: Color {
+        explicitTint ?? accentColor
     }
 
     public var body: some View {
@@ -27,7 +33,7 @@ public struct AppToggleRow: View {
             if let icon {
                 Image(systemName: icon)
                     .font(DesignTokens.IconTypography.medium)
-                    .foregroundColor(tint)
+                    .foregroundColor(resolvedTint)
                     .frame(width: DesignTokens.Sizing.iconLarge + DesignTokens.Spacing.xs)
                     .accessibilityHidden(true)
             }
@@ -48,7 +54,7 @@ public struct AppToggleRow: View {
 
             Toggle("", isOn: $isOn)
                 .labelsHidden()
-                .tint(tint)
+                .tint(resolvedTint)
                 .onChange(of: isOn) { _, _ in
                     AppHaptics.selectionChanged()
                 }

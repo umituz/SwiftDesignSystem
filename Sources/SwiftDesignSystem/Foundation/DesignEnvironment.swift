@@ -5,20 +5,11 @@ private struct DesignAccentColorKey: EnvironmentKey {
     static let defaultValue = DesignTokens.Colors.primary
 }
 
-private struct DesignCornerRadiusKey: EnvironmentKey {
-    static let defaultValue = DesignTokens.CornerRadius.lg
-}
-
 // MARK: - Environment Values Extension
 extension EnvironmentValues {
     public var designAccentColor: Color {
         get { self[DesignAccentColorKey.self] }
         set { self[DesignAccentColorKey.self] = newValue }
-    }
-
-    public var designCornerRadius: CGFloat {
-        get { self[DesignCornerRadiusKey.self] }
-        set { self[DesignCornerRadiusKey.self] = newValue }
     }
 }
 

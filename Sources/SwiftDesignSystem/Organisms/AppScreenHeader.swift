@@ -25,10 +25,10 @@ public struct AppScreenHeader<Trailing: View>: View {
     public var body: some View {
         HStack(alignment: .center) {
             if let leftIcon, let leftAction {
-                Button(action: {
+                Button {
                     AppHaptics.light()
                     leftAction()
-                }) {
+                } label: {
                     Image(systemName: leftIcon)
                         .font(DesignTokens.IconTypography.large)
                         .foregroundColor(DesignTokens.Colors.textPrimary)

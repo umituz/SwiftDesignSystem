@@ -26,10 +26,10 @@ public struct AppListItem: View {
     }
 
     public var body: some View {
-        Button(action: {
+        Button {
             AppHaptics.light()
             action?()
-        }) {
+        } label: {
             HStack(spacing: DesignTokens.Spacing.md) {
                 if let icon {
                     Image(systemName: icon)

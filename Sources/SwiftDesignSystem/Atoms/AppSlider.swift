@@ -7,9 +7,10 @@ public struct AppSlider: View {
     let range: ClosedRange<Double>
     let step: Double
     let showValue: Bool
-    let tint: Color
+    let explicitTint: Color?
     let isDisabled: Bool
 
+    @Environment(\.designAccentColor) private var accentColor
     @State private var lastHapticStep: Int = 0
 
     public init(
@@ -18,7 +19,7 @@ public struct AppSlider: View {
         in range: ClosedRange<Double> = 0...1,
         step: Double = 0.01,
         showValue: Bool = true,
-        tint: Color = DesignTokens.Colors.primary,
+        tint: Color? = nil,
         isDisabled: Bool = false
     ) {
         self.label = label
@@ -26,8 +27,12 @@ public struct AppSlider: View {
         self.range = range
         self.step = step
         self.showValue = showValue
-        self.tint = tint
+        self.explicitTint = tint
         self.isDisabled = isDisabled
+    }
+
+    private var resolvedTint: Color {
+        explicitTint ?? accentColor
     }
 
     public var body: some View {
@@ -90,7 +95,7 @@ public struct AppSlider: View {
 
     private func trackFill(filledWidth: CGFloat) -> some View {
         RoundedRectangle(cornerRadius: DesignTokens.CornerRadius.full)
-            .fill(tint)
+            .fill(resolvedTint)
             .frame(width: filledWidth, height: DesignTokens.Sizing.sliderTrackHeight)
     }
 
@@ -100,7 +105,7 @@ public struct AppSlider: View {
             .frame(width: DesignTokens.Sizing.sliderThumbSize, height: DesignTokens.Sizing.sliderThumbSize)
             .overlay(
                 Circle()
-                    .fill(tint)
+                    .fill(resolvedTint)
                     .frame(width: DesignTokens.Sizing.sliderThumbSize - DesignTokens.Border.thick * 2)
             )
             .shadow(color: .black.opacity(DesignTokens.Opacity.transparent), radius: 2, y: 1)

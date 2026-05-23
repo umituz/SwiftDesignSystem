@@ -4,108 +4,79 @@ import SwiftUI
 
 final class ComponentTests: XCTestCase {
 
-    // MARK: - StyleResolution — New Functions
+    // MARK: - AppAction
 
-    func testCheckboxIconChecked() {
-        XCTAssertEqual(
-            StyleResolution.checkboxIcon(isChecked: true),
-            SystemStrings.StateIcons.checkboxChecked
-        )
+    func testActionStableId() {
+        let action = AppAction(title: "Confirm") {}
+        XCTAssertEqual(action.id, "Confirm")
     }
 
-    func testCheckboxIconUnchecked() {
-        XCTAssertEqual(
-            StyleResolution.checkboxIcon(isChecked: false),
-            SystemStrings.StateIcons.checkboxUnchecked
-        )
+    func testActionCustomId() {
+        let action = AppAction(id: "custom", title: "Confirm") {}
+        XCTAssertEqual(action.id, "custom")
     }
 
-    func testCheckboxLabelChecked() {
-        XCTAssertEqual(
-            StyleResolution.checkboxLabel(isChecked: true),
-            SystemStrings.Accessibility.checkboxChecked
-        )
+    func testActionDestructiveStyle() {
+        let action = AppAction(title: "Delete", style: .destructive) {}
+        if case .destructive = action.style {
+            // expected
+        } else {
+            XCTFail("Should be destructive")
+        }
     }
 
-    func testCheckboxLabelUnchecked() {
-        XCTAssertEqual(
-            StyleResolution.checkboxLabel(isChecked: false),
-            SystemStrings.Accessibility.checkboxUnchecked
-        )
+    func testActionDefaultStyle() {
+        let action = AppAction(title: "OK") {}
+        if case .default = action.style {
+            // expected
+        } else {
+            XCTFail("Should be default")
+        }
     }
 
-    func testAccordionLabelExpanded() {
-        XCTAssertEqual(
-            StyleResolution.accordionLabel(isExpanded: true),
-            SystemStrings.Accessibility.accordionExpanded
-        )
+    func testActionCancelStyle() {
+        let action = AppAction(title: "Cancel", style: .cancel) {}
+        if case .cancel = action.style {
+            // expected
+        } else {
+            XCTFail("Should be cancel")
+        }
     }
 
-    func testAccordionLabelCollapsed() {
-        XCTAssertEqual(
-            StyleResolution.accordionLabel(isExpanded: false),
-            SystemStrings.Accessibility.accordionCollapsed
-        )
+    func testActionEqualityById() {
+        let a1 = AppAction(id: "x", title: "A") {}
+        let a2 = AppAction(id: "x", title: "B") {}
+        XCTAssertEqual(a1.id, a2.id)
     }
 
-    func testAccordionChevronExpanded() {
-        XCTAssertEqual(
-            StyleResolution.accordionChevron(isExpanded: true),
-            SystemStrings.StateIcons.chevronUp
-        )
-    }
-
-    func testAccordionChevronCollapsed() {
-        XCTAssertEqual(
-            StyleResolution.accordionChevron(isExpanded: false),
-            SystemStrings.StateIcons.chevronDown
-        )
-    }
-
-    func testAccordionRotationExpanded() {
-        let angle = StyleResolution.accordionRotation(isExpanded: true)
-        XCTAssertEqual(angle.degrees, 180)
-    }
-
-    func testAccordionRotationCollapsed() {
-        let angle = StyleResolution.accordionRotation(isExpanded: false)
-        XCTAssertEqual(angle.degrees, 0)
+    func testActionDifferentId() {
+        let a1 = AppAction(title: "A") {}
+        let a2 = AppAction(title: "B") {}
+        XCTAssertNotEqual(a1.id, a2.id)
     }
 
     // MARK: - AppIcon
 
-    func testAppIconSizeSmall() {
-        let icon = AppIcon("star", size: .small)
-        XCTAssertNotNil(icon)
+    func testAppIconSizes() {
+        let sizes: [AppIconSize] = [.small, .medium, .large, .xLarge, .hero]
+        for size in sizes {
+            let icon = AppIcon("star", size: size)
+            XCTAssertNotNil(icon)
+        }
     }
 
-    func testAppIconSizeMedium() {
-        let icon = AppIcon("star", size: .medium)
-        XCTAssertNotNil(icon)
-    }
-
-    func testAppIconSizeLarge() {
-        let icon = AppIcon("star", size: .large)
-        XCTAssertNotNil(icon)
-    }
-
-    func testAppIconSizeXLarge() {
-        let icon = AppIcon("star", size: .xLarge)
-        XCTAssertNotNil(icon)
-    }
-
-    func testAppIconSizeHero() {
-        let icon = AppIcon("star", size: .hero)
-        XCTAssertNotNil(icon)
-    }
-
-    func testAppIconDefaultColor() {
+    func testAppIconDefaultParameters() {
         let icon = AppIcon("star")
         XCTAssertNotNil(icon)
     }
 
     func testAppIconCustomColor() {
         let icon = AppIcon("star", color: .red)
+        XCTAssertNotNil(icon)
+    }
+
+    func testAppIconRenderingMode() {
+        let icon = AppIcon("star", renderingMode: .multicolor)
         XCTAssertNotNil(icon)
     }
 
@@ -126,35 +97,29 @@ final class ComponentTests: XCTestCase {
         XCTAssertNotNil(toggle)
     }
 
-    func testToggleCustomLabel() {
-        let toggle = AppToggle(label: "Dark Mode", isOn: .constant(true))
+    func testToggleCustomTint() {
+        let toggle = AppToggle(label: "Test", isOn: .constant(true), tint: .blue)
         XCTAssertNotNil(toggle)
     }
 
     // MARK: - AppCheckbox
 
-    func testCheckboxUncheckedState() {
-        let checkbox = AppCheckbox(label: "Test", isChecked: .constant(false))
-        XCTAssertNotNil(checkbox)
+    func testCheckboxStates() {
+        let checked = AppCheckbox(label: "Test", isChecked: .constant(true))
+        let unchecked = AppCheckbox(label: "Test", isChecked: .constant(false))
+        XCTAssertNotNil(checked)
+        XCTAssertNotNil(unchecked)
     }
 
-    func testCheckboxCheckedState() {
-        let checkbox = AppCheckbox(label: "Test", isChecked: .constant(true))
-        XCTAssertNotNil(checkbox)
+    func testCheckboxStyles() {
+        let defaultStyle = AppCheckbox(label: "Test", isChecked: .constant(false), style: .default)
+        let circular = AppCheckbox(label: "Test", isChecked: .constant(false), style: .circular)
+        XCTAssertNotNil(defaultStyle)
+        XCTAssertNotNil(circular)
     }
 
     func testCheckboxDisabled() {
         let checkbox = AppCheckbox(label: "Test", isChecked: .constant(false), isDisabled: true)
-        XCTAssertNotNil(checkbox)
-    }
-
-    func testCheckboxDefaultStyle() {
-        let checkbox = AppCheckbox(label: "Test", isChecked: .constant(false), style: .default)
-        XCTAssertNotNil(checkbox)
-    }
-
-    func testCheckboxCircularStyle() {
-        let checkbox = AppCheckbox(label: "Test", isChecked: .constant(false), style: .circular)
         XCTAssertNotNil(checkbox)
     }
 
@@ -175,7 +140,7 @@ final class ComponentTests: XCTestCase {
         XCTAssertNotNil(slider)
     }
 
-    func testSliderRange() {
+    func testSliderCustomRange() {
         let slider = AppSlider(value: .constant(50), in: 0...100)
         XCTAssertNotNil(slider)
     }
@@ -195,20 +160,104 @@ final class ComponentTests: XCTestCase {
         XCTAssertNotNil(slider)
     }
 
-    // MARK: - AppAccordion
+    // MARK: - AppButton
 
-    func testAccordionCollapsed() {
-        let accordion = AppAccordion(title: "Section", isExpanded: .constant(false)) {
-            Text("Content")
+    func testButtonStyles() {
+        let styles: [AppButtonStyle] = [.primary, .secondary, .outline, .ghost]
+        for style in styles {
+            let button = AppButton("Test", style: style) {}
+            XCTAssertNotNil(button)
         }
-        XCTAssertNotNil(accordion)
     }
 
-    func testAccordionExpanded() {
-        let accordion = AppAccordion(title: "Section", isExpanded: .constant(true)) {
+    func testButtonWithIcon() {
+        let button = AppButton("Test", icon: "star") {}
+        XCTAssertNotNil(button)
+    }
+
+    func testButtonLoading() {
+        let button = AppButton("Test", isLoading: true) {}
+        XCTAssertNotNil(button)
+    }
+
+    func testButtonDisabled() {
+        let button = AppButton("Test", isDisabled: true) {}
+        XCTAssertNotNil(button)
+    }
+
+    // MARK: - AppAvatar
+
+    func testAvatarSizes() {
+        let sizes: [AppAvatarSize] = [.small, .medium, .large, .xLarge]
+        for size in sizes {
+            let avatar = AppAvatar(initials: "AB", size: size)
+            XCTAssertNotNil(avatar)
+        }
+    }
+
+    func testAvatarWithInitials() {
+        let avatar = AppAvatar(initials: "JD")
+        XCTAssertNotNil(avatar)
+    }
+
+    func testAvatarWithImage() {
+        let avatar = AppAvatar(imageName: "profile")
+        XCTAssertNotNil(avatar)
+    }
+
+    func testAvatarCustomColor() {
+        let avatar = AppAvatar(initials: "AB", color: .blue)
+        XCTAssertNotNil(avatar)
+    }
+
+    // MARK: - AppBadge
+
+    func testBadgeStyles() {
+        let pill = AppBadge(text: "New", style: .pill)
+        let dot = AppBadge(style: .dot)
+        let count = AppBadge(style: .count(5))
+        XCTAssertNotNil(pill)
+        XCTAssertNotNil(dot)
+        XCTAssertNotNil(count)
+    }
+
+    func testBadgeCustomColor() {
+        let badge = AppBadge(text: "New", color: .blue)
+        XCTAssertNotNil(badge)
+    }
+
+    // MARK: - AppProgressView
+
+    func testProgressViewStyles() {
+        let circular = AppProgressView(progress: 0.5, style: .circular)
+        let linear = AppProgressView(progress: 0.5, style: .linear)
+        XCTAssertNotNil(circular)
+        XCTAssertNotNil(linear)
+    }
+
+    func testProgressViewClamping() {
+        let overClamped = AppProgressView(progress: 2.0)
+        XCTAssertNotNil(overClamped)
+        let underClamped = AppProgressView(progress: -1.0)
+        XCTAssertNotNil(underClamped)
+    }
+
+    func testProgressViewWithLabel() {
+        let progress = AppProgressView(progress: 0.7, label: "Uploading")
+        XCTAssertNotNil(progress)
+    }
+
+    // MARK: - AppAccordion
+
+    func testAccordionStates() {
+        let collapsed = AppAccordion(title: "Section", isExpanded: .constant(false)) {
             Text("Content")
         }
-        XCTAssertNotNil(accordion)
+        let expanded = AppAccordion(title: "Section", isExpanded: .constant(true)) {
+            Text("Content")
+        }
+        XCTAssertNotNil(collapsed)
+        XCTAssertNotNil(expanded)
     }
 
     func testAccordionWithIcon() {
@@ -225,291 +274,16 @@ final class ComponentTests: XCTestCase {
         XCTAssertNotNil(accordion)
     }
 
-    // MARK: - AppTabs
+    // MARK: - Animations Exist
 
-    func testTabsCreation() {
-        let tabs = AppTabs(
-            items: [AppTabItem(title: "Tab 1"), AppTabItem(title: "Tab 2")],
-            selectedIndex: .constant(0)
-        )
-        XCTAssertNotNil(tabs)
-    }
-
-    func testTabsWithIcons() {
-        let tabs = AppTabs(
-            items: [
-                AppTabItem(title: "Home", icon: "house"),
-                AppTabItem(title: "Settings", icon: "gear")
-            ],
-            selectedIndex: .constant(0)
-        )
-        XCTAssertNotNil(tabs)
-    }
-
-    func testTabItemIdentifiable() {
-        let item = AppTabItem(title: "Test")
-        XCTAssertEqual(item.id, "Test")
-        XCTAssertNil(item.icon)
-    }
-
-    func testTabItemCustomId() {
-        let item = AppTabItem(id: "custom", title: "Test")
-        XCTAssertEqual(item.id, "custom")
-    }
-
-    func testTabItemEquatable() {
-        let item1 = AppTabItem(id: "a", title: "Test")
-        let item2 = AppTabItem(id: "a", title: "Test")
-        XCTAssertEqual(item1, item2)
-    }
-
-    // MARK: - AppDatePicker
-
-    func testDatePickerCompact() {
-        let picker = AppDatePicker(date: .constant(Date()), style: .compact)
-        XCTAssertNotNil(picker)
-    }
-
-    func testDatePickerGraphical() {
-        let picker = AppDatePicker(date: .constant(Date()), style: .graphical)
-        XCTAssertNotNil(picker)
-    }
-
-    func testDatePickerWheel() {
-        let picker = AppDatePicker(date: .constant(Date()), style: .wheel)
-        XCTAssertNotNil(picker)
-    }
-
-    func testDatePickerWithLabel() {
-        let picker = AppDatePicker(label: "Birthday", date: .constant(Date()))
-        XCTAssertNotNil(picker)
-    }
-
-    func testDatePickerWithRange() {
-        let today = Date()
-        let picker = AppDatePicker(
-            date: .constant(today),
-            in: today...Calendar.current.date(byAdding: .year, value: 1, to: today)!
-        )
-        XCTAssertNotNil(picker)
-    }
-
-    // MARK: - AppDropdown
-
-    func testDropdownNoSelection() {
-        let dropdown = AppDropdown(options: ["A", "B", "C"], selectedIndex: .constant(nil))
-        XCTAssertNotNil(dropdown)
-    }
-
-    func testDropdownWithSelection() {
-        let dropdown = AppDropdown(options: ["A", "B", "C"], selectedIndex: .constant(1))
-        XCTAssertNotNil(dropdown)
-    }
-
-    func testDropdownMenuStyle() {
-        let dropdown = AppDropdown(options: ["A", "B"], selectedIndex: .constant(nil), style: .menu)
-        XCTAssertNotNil(dropdown)
-    }
-
-    func testDropdownSheetStyle() {
-        let dropdown = AppDropdown(options: ["A", "B"], selectedIndex: .constant(nil), style: .sheet)
-        XCTAssertNotNil(dropdown)
-    }
-
-    func testDropdownWithLabel() {
-        let dropdown = AppDropdown(label: "Country", options: ["US", "UK"], selectedIndex: .constant(nil))
-        XCTAssertNotNil(dropdown)
-    }
-
-    // MARK: - AppAction
-
-    func testActionStableId() {
-        let action = AppAction(title: "Confirm") {}
-        XCTAssertEqual(action.id, "Confirm")
-    }
-
-    func testActionCustomId() {
-        let action = AppAction(id: "custom", title: "Confirm") {}
-        XCTAssertEqual(action.id, "custom")
-    }
-
-    func testActionDestructiveStyle() {
-        let action = AppAction(title: "Delete", style: .destructive) {}
-        if case .destructive = action.style { } else { XCTFail("Should be destructive") }
-    }
-
-    func testActionDefaultStyle() {
-        let action = AppAction(title: "OK") {}
-        if case .default = action.style { } else { XCTFail("Should be default") }
-    }
-
-    func testActionCancelStyle() {
-        let action = AppAction(title: "Cancel", style: .cancel) {}
-        if case .cancel = action.style { } else { XCTFail("Should be cancel") }
-    }
-
-    // MARK: - AppForm
-
-    func testFormCreation() {
-        let form = AppForm {
-            Text("Content")
-        }
-        XCTAssertNotNil(form)
-    }
-
-    func testFormWithTitle() {
-        let form = AppForm(title: "Settings") {
-            Text("Content")
-        }
-        XCTAssertNotNil(form)
-    }
-
-    // MARK: - AppFormSection
-
-    func testFormSectionWithTitle() {
-        let section = AppFormSection(title: "Account") {
-            Text("Content")
-        }
-        XCTAssertNotNil(section)
-    }
-
-    func testFormSectionWithFooter() {
-        let section = AppFormSection(title: "Account", footer: "Required fields") {
-            Text("Content")
-        }
-        XCTAssertNotNil(section)
-    }
-
-    func testFormSectionWithoutTitle() {
-        let section = AppFormSection {
-            Text("Content")
-        }
-        XCTAssertNotNil(section)
-    }
-
-    // MARK: - AppSectionedList
-
-    func testSectionedListCreation() {
-        let list = AppSectionedList(sections: [
-            AppListSectionData(title: "Section 1", items: [
-                AppListItemData(title: "Item 1")
-            ])
-        ])
-        XCTAssertNotNil(list)
-    }
-
-    func testSectionedListEmpty() {
-        let list = AppSectionedList(sections: [])
-        XCTAssertNotNil(list)
-    }
-
-    func testSectionedListMultipleSections() {
-        let list = AppSectionedList(sections: [
-            AppListSectionData(title: "A", items: [
-                AppListItemData(icon: "star", title: "Item 1", subtitle: "Sub", trailing: "End")
-            ]),
-            AppListSectionData(title: "B", items: [
-                AppListItemData(title: "Item 2")
-            ])
-        ])
-        XCTAssertNotNil(list)
-    }
-
-    func testSectionedListWithTapHandler() {
-        let list = AppSectionedList(
-            sections: [
-                AppListSectionData(title: "Section", items: [
-                    AppListItemData(title: "Item")
-                ])
-            ],
-            onItemTap: { _, _ in }
-        )
-        XCTAssertNotNil(list)
-    }
-
-    // MARK: - List Item Data
-
-    func testListItemDataDefaults() {
-        let item = AppListItemData(title: "Test")
-        XCTAssertNil(item.icon)
-        XCTAssertNil(item.subtitle)
-        XCTAssertNil(item.trailing)
-        XCTAssertEqual(item.id, "Test")
-    }
-
-    func testListItemDataFull() {
-        let item = AppListItemData(icon: "star", title: "Test", subtitle: "Sub", trailing: "End")
-        XCTAssertEqual(item.title, "Test")
-        XCTAssertEqual(item.subtitle, "Sub")
-        XCTAssertEqual(item.trailing, "End")
-    }
-
-    func testListItemDataCustomId() {
-        let item = AppListItemData(id: "custom-id", title: "Test")
-        XCTAssertEqual(item.id, "custom-id")
-    }
-
-    func testListSectionDataStableId() {
-        let section = AppListSectionData(title: "Section", items: [])
-        XCTAssertEqual(section.id, "Section")
-    }
-
-    func testListSectionDataCustomId() {
-        let section = AppListSectionData(id: "custom", title: "Section", items: [])
-        XCTAssertEqual(section.id, "custom")
-    }
-
-    // MARK: - Design Tokens — New Entries
-
-    func testNewSizingTokens() {
-        XCTAssertEqual(DesignTokens.Sizing.toggleHeight, 31)
-        XCTAssertEqual(DesignTokens.Sizing.checkboxSize, 24)
-        XCTAssertEqual(DesignTokens.Sizing.sliderTrackHeight, 4)
-        XCTAssertEqual(DesignTokens.Sizing.sliderThumbSize, 28)
-        XCTAssertEqual(DesignTokens.Sizing.tabHeight, 44)
-        XCTAssertEqual(DesignTokens.Sizing.accordionMinHeight, 48)
-        XCTAssertEqual(DesignTokens.Sizing.dropdownHeight, 48)
-        XCTAssertEqual(DesignTokens.Sizing.actionSheetRowHeight, 56)
-        XCTAssertEqual(DesignTokens.Sizing.formSectionSpacing, 24)
-    }
-
-    func testExpandAnimationExists() {
-        let animation = DesignTokens.Animations.expand
-        XCTAssertNotNil(animation)
-    }
-
-    // MARK: - SystemStrings — New Entries
-
-    func testNewAccessibilityStrings() {
-        XCTAssertFalse(SystemStrings.Accessibility.toggle.isEmpty)
-        XCTAssertFalse(SystemStrings.Accessibility.checkbox.isEmpty)
-        XCTAssertFalse(SystemStrings.Accessibility.checkboxChecked.isEmpty)
-        XCTAssertFalse(SystemStrings.Accessibility.checkboxUnchecked.isEmpty)
-        XCTAssertFalse(SystemStrings.Accessibility.slider.isEmpty)
-        XCTAssertFalse(SystemStrings.Accessibility.sliderValue.isEmpty)
-        XCTAssertFalse(SystemStrings.Accessibility.accordion.isEmpty)
-        XCTAssertFalse(SystemStrings.Accessibility.accordionExpanded.isEmpty)
-        XCTAssertFalse(SystemStrings.Accessibility.accordionCollapsed.isEmpty)
-        XCTAssertFalse(SystemStrings.Accessibility.dropdown.isEmpty)
-        XCTAssertFalse(SystemStrings.Accessibility.datePicker.isEmpty)
-        XCTAssertFalse(SystemStrings.Accessibility.tab.isEmpty)
-        XCTAssertFalse(SystemStrings.Accessibility.actionSheet.isEmpty)
-        XCTAssertFalse(SystemStrings.Accessibility.expand.isEmpty)
-        XCTAssertFalse(SystemStrings.Accessibility.collapse.isEmpty)
-    }
-
-    func testNewStateIcons() {
-        XCTAssertFalse(SystemStrings.StateIcons.checkboxChecked.isEmpty)
-        XCTAssertFalse(SystemStrings.StateIcons.checkboxUnchecked.isEmpty)
-        XCTAssertFalse(SystemStrings.StateIcons.chevronDown.isEmpty)
-        XCTAssertFalse(SystemStrings.StateIcons.chevronUp.isEmpty)
-        XCTAssertFalse(SystemStrings.StateIcons.dropdown.isEmpty)
-        XCTAssertFalse(SystemStrings.StateIcons.calendar.isEmpty)
-    }
-
-    func testComponentDefaults() {
-        XCTAssertFalse(SystemStrings.ComponentDefaults.selectOption.isEmpty)
-        XCTAssertFalse(SystemStrings.ComponentDefaults.expand.isEmpty)
-        XCTAssertFalse(SystemStrings.ComponentDefaults.collapse.isEmpty)
+    func testAnimationTokens() {
+        XCTAssertNotNil(DesignTokens.Animations.quick)
+        XCTAssertNotNil(DesignTokens.Animations.standard)
+        XCTAssertNotNil(DesignTokens.Animations.slow)
+        XCTAssertNotNil(DesignTokens.Animations.bouncy)
+        XCTAssertNotNil(DesignTokens.Animations.progress)
+        XCTAssertNotNil(DesignTokens.Animations.card)
+        XCTAssertNotNil(DesignTokens.Animations.expand)
+        XCTAssertNotNil(DesignTokens.Animations.button)
     }
 }

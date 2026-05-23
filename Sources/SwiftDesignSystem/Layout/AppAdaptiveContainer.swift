@@ -10,7 +10,7 @@ public struct AppAdaptiveContainer<Content: View>: View {
     }
 
     public var body: some View {
-        GeometryReader { geometry in
+        GeometryReader { _ in
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(spacing: 0) {
                     content

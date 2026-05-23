@@ -1,7 +1,7 @@
 import SwiftUI
 
 // MARK: - Checkbox Shape
-public enum AppCheckboxStyle {
+public enum AppCheckboxStyle: Sendable {
     case `default`
     case circular
 }
@@ -10,22 +10,28 @@ public enum AppCheckboxStyle {
 public struct AppCheckbox: View {
     let label: String
     @Binding var isChecked: Bool
-    let color: Color
+    let explicitColor: Color?
     let style: AppCheckboxStyle
     let isDisabled: Bool
+
+    @Environment(\.designAccentColor) private var accentColor
 
     public init(
         label: String,
         isChecked: Binding<Bool>,
-        color: Color = DesignTokens.Colors.primary,
+        color: Color? = nil,
         style: AppCheckboxStyle = .default,
         isDisabled: Bool = false
     ) {
         self.label = label
         self._isChecked = isChecked
-        self.color = color
+        self.explicitColor = color
         self.style = style
         self.isDisabled = isDisabled
+    }
+
+    private var resolvedColor: Color {
+        explicitColor ?? accentColor
     }
 
     public var body: some View {
@@ -63,7 +69,7 @@ public struct AppCheckbox: View {
             .font(DesignTokens.IconTypography.medium)
             .foregroundColor(StyleResolution.selectionForeground(
                 isSelected: isChecked,
-                activeColor: color,
+                activeColor: resolvedColor,
                 inactiveColor: DesignTokens.Colors.textTertiary
             ))
             .frame(width: DesignTokens.Sizing.checkboxSize, height: DesignTokens.Sizing.checkboxSize)
@@ -72,12 +78,12 @@ public struct AppCheckbox: View {
     private var circularIndicator: some View {
         ZStack {
             Circle()
-                .fill(StyleResolution.selectionBackground(isSelected: isChecked, activeColor: color))
+                .fill(StyleResolution.selectionBackground(isSelected: isChecked, activeColor: resolvedColor))
                 .frame(width: DesignTokens.Sizing.checkboxSize, height: DesignTokens.Sizing.checkboxSize)
 
             Circle()
                 .stroke(
-                    StyleResolution.selectionBorder(isSelected: isChecked, activeColor: color),
+                    StyleResolution.selectionBorder(isSelected: isChecked, activeColor: resolvedColor),
                     lineWidth: StyleResolution.selectionBorderWidth(isSelected: isChecked)
                 )
                 .frame(width: DesignTokens.Sizing.checkboxSize, height: DesignTokens.Sizing.checkboxSize)

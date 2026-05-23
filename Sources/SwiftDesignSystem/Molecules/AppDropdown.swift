@@ -1,7 +1,7 @@
 import SwiftUI
 
 // MARK: - Dropdown Style
-public enum AppDropdownStyle {
+public enum AppDropdownStyle: Sendable {
     case menu
     case sheet
 }
@@ -13,8 +13,9 @@ public struct AppDropdown: View {
     let options: [String]
     @Binding var selectedIndex: Int?
     let style: AppDropdownStyle
-    let tint: Color
+    let explicitTint: Color?
 
+    @Environment(\.designAccentColor) private var accentColor
     @State private var showSheet = false
 
     public init(
@@ -23,14 +24,18 @@ public struct AppDropdown: View {
         options: [String],
         selectedIndex: Binding<Int?>,
         style: AppDropdownStyle = .menu,
-        tint: Color = DesignTokens.Colors.primary
+        tint: Color? = nil
     ) {
         self.label = label
         self.placeholder = placeholder
         self.options = options
         self._selectedIndex = selectedIndex
         self.style = style
-        self.tint = tint
+        self.explicitTint = tint
+    }
+
+    private var resolvedTint: Color {
+        explicitTint ?? accentColor
     }
 
     public var body: some View {
@@ -118,7 +123,7 @@ public struct AppDropdown: View {
                             if selectedIndex == index {
                                 Image(systemName: SystemStrings.StateIcons.selectedIndicator)
                                     .font(DesignTokens.IconTypography.medium)
-                                    .foregroundColor(tint)
+                                    .foregroundColor(resolvedTint)
                             }
                         }
                         .padding(.horizontal, DesignTokens.Spacing.lg)

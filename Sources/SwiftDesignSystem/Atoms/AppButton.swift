@@ -1,7 +1,7 @@
 import SwiftUI
 
 // MARK: - Button Style
-public enum AppButtonStyle {
+public enum AppButtonStyle: Sendable {
     case primary
     case secondary
     case outline
@@ -34,14 +34,14 @@ public struct AppButton: View {
     }
 
     public var body: some View {
-        Button(action: {
+        Button {
             AppHaptics.light()
             action()
-        }) {
+        } label: {
             buttonContent
         }
         .disabled(isDisabled || isLoading)
-        .opacity(StyleResolution.disabledOpacity(isDisabled: isDisabled))
+        .opacity(StyleResolution.disabledOpacity(isDisabled: isDisabled || isLoading))
         .accessibilityLabel(title)
         .accessibilityAddTraits(.isButton)
     }
