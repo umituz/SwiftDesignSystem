@@ -28,6 +28,7 @@ public enum SystemStrings {
         public static let accordion = "Accordion"
         public static let accordionExpanded = "Expanded"
         public static let accordionCollapsed = "Collapsed"
+        public static let stepIndicator = "Step indicator"
         public static let dropdown = "Dropdown"
         public static let datePicker = "Date picker"
         public static let tab = "Tab"

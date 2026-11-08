@@ -8,6 +8,8 @@ extension DesignTokens {
         public static let medium = DesignShadow(color: .black.opacity(0.1), radius: 8, y: 4)
         public static let strong = DesignShadow(color: Colors.primary.opacity(0.3), radius: 16, y: 8)
         public static let cardTint = DesignShadow(color: Colors.primary.opacity(0.3), radius: 10, y: 5)
+        /// Soft card elevation — plain black, works on any surface.
+        public static let card = DesignShadow(color: .black.opacity(0.05), radius: 10, y: 5)
     }
 
     public enum Animations {
@@ -19,6 +21,19 @@ extension DesignTokens {
         public static let card = Animation.easeInOut(duration: 0.3)
         public static let expand = Animation.spring(response: 0.35, dampingFraction: 0.8)
         public static let button = Animation.easeInOut(duration: 0.15)
+        /// Gentle looping pulse for timers and live indicators.
+        public static let pulse = Animation.easeInOut(duration: 1.2).repeatForever(autoreverses: true)
+        /// Slow looping scale for mascots and breathing effects.
+        public static let breathing = Animation.easeInOut(duration: 2.0).repeatForever(autoreverses: true)
+    }
+
+    /// Standardized scale factors for pulse/breathing/appear-disappear effects.
+    public enum Scale {
+        public static let identity: CGFloat = 1.0
+        public static let pulse: CGFloat = 1.03
+        public static let gentlePulse: CGFloat = 1.05
+        public static let breathing: CGFloat = 1.1
+        public static let disappear: CGFloat = 0.8
     }
 
     public enum Border {

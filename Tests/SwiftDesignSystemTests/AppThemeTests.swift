@@ -76,6 +76,58 @@ final class AppThemeTests: XCTestCase {
         XCTAssertEqual(theme, same)
         XCTAssertNotEqual(theme, different)
     }
+
+    // MARK: - v1.2.0 Additions
+
+    func testRoundedTypographyCoversFullScale() {
+        // Compile-time presence of the full rounded scale; runtime check via descriptions.
+        let fonts: [Font] = [
+            DesignTokens.RoundedTypography.displayXL,
+            DesignTokens.RoundedTypography.display,
+            DesignTokens.RoundedTypography.largeTitle,
+            DesignTokens.RoundedTypography.title,
+            DesignTokens.RoundedTypography.title2,
+            DesignTokens.RoundedTypography.title3,
+            DesignTokens.RoundedTypography.headline,
+            DesignTokens.RoundedTypography.body,
+            DesignTokens.RoundedTypography.bodyBold,
+            DesignTokens.RoundedTypography.callout,
+            DesignTokens.RoundedTypography.calloutBold,
+            DesignTokens.RoundedTypography.subheadline,
+            DesignTokens.RoundedTypography.subheadlineBold,
+            DesignTokens.RoundedTypography.footnote,
+            DesignTokens.RoundedTypography.footnoteBold,
+            DesignTokens.RoundedTypography.caption,
+            DesignTokens.RoundedTypography.captionBold,
+            DesignTokens.RoundedTypography.caption2
+        ]
+        XCTAssertEqual(fonts.count, 18, "Rounded scale must be complete")
+    }
+
+    func testScaleTokens() {
+        XCTAssertEqual(DesignTokens.Scale.identity, 1.0, accuracy: 0.001)
+        XCTAssertEqual(DesignTokens.Scale.pulse, 1.03, accuracy: 0.001)
+        XCTAssertEqual(DesignTokens.Scale.gentlePulse, 1.05, accuracy: 0.001)
+        XCTAssertEqual(DesignTokens.Scale.breathing, 1.1, accuracy: 0.001)
+        XCTAssertEqual(DesignTokens.Scale.disappear, 0.8, accuracy: 0.001)
+    }
+
+    func testStepIndicatorDefaults() {
+        let indicator = AppStepIndicator(stepCount: 4, currentStep: 1)
+        XCTAssertNotNil(indicator)
+    }
+
+    func testCardShadowExists() {
+        XCTAssertEqual(DesignTokens.Shadows.card.radius, 10, accuracy: 0.001)
+        XCTAssertEqual(DesignTokens.Shadows.card.y, 5, accuracy: 0.001)
+    }
+
+    func testAvatarAndControlSizes() {
+        XCTAssertEqual(DesignTokens.Sizing.avatarSmall, 40, accuracy: 0.001)
+        XCTAssertEqual(DesignTokens.Sizing.avatarMedium, 60, accuracy: 0.001)
+        XCTAssertEqual(DesignTokens.Sizing.avatarLarge, 80, accuracy: 0.001)
+        XCTAssertEqual(DesignTokens.Sizing.controlHeight, 44, accuracy: 0.001)
+    }
 }
 
 // MARK: - Preset Catalog

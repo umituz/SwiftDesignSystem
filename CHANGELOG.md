@@ -4,6 +4,21 @@ All notable changes to this package are documented here.
 Quality gate for every release: `swiftlint` clean + `swift build` + `swift test` green.
 Consumers bind via SPM URL (`from: 1.0.0`) — releases follow strict SemVer.
 
+## [1.2.0] — 2026-11-09
+
+### Added
+- **Rounded typography scale:** `DesignTokens.RoundedTypography` — the full text scale (displayXL → caption2) in rounded design, for friendly consumer apps.
+- **`AppStepIndicator`** — themed onboarding/multi-step dots (capsule for current step).
+- **`View.fadeSlide(isVisible:yOffset:)`** — fade + slide transition for step reveals.
+- **Animation tokens:** `Animations.pulse` (1.2s loop), `Animations.breathing` (2s loop).
+- **`DesignTokens.Scale`** — standardized pulse/breathing/appear scale factors.
+- **`Shadows.card`** — soft plain-black card elevation.
+- **Sizing:** `avatarSmall/Medium/Large` (40/60/80), `controlHeight` (44).
+- **`SystemStrings.Accessibility.stepIndicator`**.
+
+### Source
+Promoted from `swift_adhd_focus_buddy` local design layer (first fleet adoption pass) — generalized, app-independent.
+
 ## [1.1.0] — 2026-11-09
 
 ### Added

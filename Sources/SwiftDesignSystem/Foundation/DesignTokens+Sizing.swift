@@ -18,6 +18,10 @@ extension DesignTokens {
         public static let buttonHeight: CGFloat = 48
         public static let textFieldHeight: CGFloat = 48
         public static let searchBarHeight: CGFloat = 36
+        public static let controlHeight: CGFloat = 44
+        public static let avatarSmall: CGFloat = 40
+        public static let avatarMedium: CGFloat = 60
+        public static let avatarLarge: CGFloat = 80
         public static let listItemHeight: CGFloat = 56
         public static let toggleHeight: CGFloat = 31
         public static let checkboxSize: CGFloat = 24
