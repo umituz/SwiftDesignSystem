@@ -44,6 +44,7 @@ final class StateStyleTests: XCTestCase {
             .styledScale(true, style: scaleStyle)
             .styledFontWeight(false, style: weightStyle)
             .styledSelectionAccessibility(true)
+            .styledSelectionAccessibility(true, hint: "Double tap to deselect")
 
         XCTAssertNotNil(styled)
     }

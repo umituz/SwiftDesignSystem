@@ -4,6 +4,11 @@ All notable changes to this package are documented here.
 Quality gate for every release: `swiftlint` clean + `swift build` + `swift test` green.
 Consumers bind via SPM URL (`from: 1.0.0`) — releases follow strict SemVer.
 
+## [1.4.2] — 2026-11-09
+
+### Added
+- **`styledSelectionAccessibility(_:hint:)`** — optional VoiceOver usage hint alongside the selected trait.
+
 ## [1.4.1] — 2026-11-09
 
 ### Added

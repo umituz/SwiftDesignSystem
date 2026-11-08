@@ -42,8 +42,17 @@ extension View {
     }
 
     /// Marks selectable rows/chips so VoiceOver announces "selected" — pairs
-    /// with the visual selection styles above.
-    public func styledSelectionAccessibility(_ isSelected: Bool) -> some View {
-        accessibilityAddTraits(isSelected ? .isSelected : [])
+    /// with the visual selection styles above. An optional `hint` (e.g.
+    /// "Double tap to deselect") reads as the accessibility hint.
+    @ViewBuilder
+    public func styledSelectionAccessibility(_ isSelected: Bool, hint: String? = nil) -> some View {
+        if let hint {
+            self
+                .accessibilityAddTraits(isSelected ? .isSelected : [])
+                .accessibilityHint(hint)
+        } else {
+            self
+                .accessibilityAddTraits(isSelected ? .isSelected : [])
+        }
     }
 }
