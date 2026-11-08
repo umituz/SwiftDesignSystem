@@ -157,6 +157,25 @@ SomeView().hideKeyboard()
 // Themed backgrounds
 SomeView().themedBackground()
 SomeView().groupedBackground()
+
+// Shimmer (loading placeholders)
+SomeView().shimmer(isActive: isLoading)
+```
+
+### Hex Colors & State Styles (v1.4.0)
+
+```swift
+// Brand palette from hex strings, with shade adjustment
+let brand = Color(hex: "FF4460")
+let pressed = brand.darken(by: 0.2)
+brand.toHex() // "FF4460"
+
+// State pairs replace ternaries with named tokens
+let selection = StateStyle<Color>(active: .white, inactive: .secondary)
+Text("Option")
+    .styledForeground(isSelected, style: selection)
+    .styledBackground(isSelected, style: StateStyle(active: theme.accentPrimary, inactive: .clear))
+    .styledSelectionAccessibility(isSelected)
 ```
 
 ## Responsive Design

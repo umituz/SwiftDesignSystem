@@ -4,6 +4,17 @@ All notable changes to this package are documented here.
 Quality gate for every release: `swiftlint` clean + `swift build` + `swift test` green.
 Consumers bind via SPM URL (`from: 1.0.0`) — releases follow strict SemVer.
 
+## [1.4.0] — 2026-11-09
+
+### Added
+- **`Color(hex:)` / `Color.toHex()`** — hex-string round trip (RGB, RGBA, RRGGBB, RRGGBBAA and shorthand); invalid input resolves to black.
+- **`Color.lighten(by:)` / `Color.darken(by:)`** — shade adjustment for brand palettes defined in code.
+- **`StateStyle<T>`** — generic active/inactive value pair replacing scattered ternaries; `Sendable`/`Equatable` conditional conformances.
+- **`View.styled*` helpers** — apply `StateStyle` tokens declaratively: foreground, background, stroke, opacity, scale, font weight, selection accessibility.
+
+### Source
+Promoted from `swift_aria_ai_character_chat` local design layer (second fleet adoption pass) — generalized, app-independent.
+
 ## [1.3.0] — 2026-11-09
 
 ### Added
