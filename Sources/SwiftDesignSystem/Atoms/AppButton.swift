@@ -17,6 +17,8 @@ public struct AppButton: View {
     let isDisabled: Bool
     let action: () -> Void
 
+    @Environment(\.appTheme) private var theme
+
     public init(
         _ title: String,
         icon: String? = nil,
@@ -66,7 +68,7 @@ public struct AppButton: View {
         HStack(spacing: DesignTokens.Spacing.sm) {
             if isLoading {
                 ProgressView()
-                    .tint(DesignTokens.Colors.textOnPrimary)
+                    .tint(theme.onAccent)
             } else {
                 iconView
             }
@@ -75,8 +77,8 @@ public struct AppButton: View {
         }
         .frame(maxWidth: .infinity)
         .frame(height: DesignTokens.Sizing.buttonHeight)
-        .background(DesignTokens.Gradients.hero)
-        .clipShape(RoundedRectangle(cornerRadius: DesignTokens.CornerRadius.lg, style: .continuous))
+        .background(theme.heroGradient)
+        .clipShape(RoundedRectangle(cornerRadius: theme.radius(DesignTokens.CornerRadius.lg), style: .continuous))
         .appShadow(DesignTokens.Shadows.cardTint)
     }
 
@@ -84,7 +86,7 @@ public struct AppButton: View {
         HStack(spacing: DesignTokens.Spacing.sm) {
             if isLoading {
                 ProgressView()
-                    .tint(DesignTokens.Colors.primary)
+                    .tint(theme.accentPrimary)
             } else {
                 iconView
             }
@@ -94,17 +96,17 @@ public struct AppButton: View {
         .padding(.horizontal, DesignTokens.Spacing.xl)
         .padding(.vertical, DesignTokens.Spacing.md)
         .background(
-            RoundedRectangle(cornerRadius: DesignTokens.CornerRadius.lg, style: .continuous)
-                .stroke(DesignTokens.Colors.primary.opacity(DesignTokens.Opacity.veryTransparent), lineWidth: DesignTokens.Border.thick)
+            RoundedRectangle(cornerRadius: theme.radius(DesignTokens.CornerRadius.lg), style: .continuous)
+                .stroke(theme.accentPrimary.opacity(DesignTokens.Opacity.veryTransparent), lineWidth: DesignTokens.Border.thick)
         )
-        .foregroundColor(DesignTokens.Colors.primary)
+        .foregroundColor(theme.accentPrimary)
     }
 
     private var outlineContent: some View {
         HStack(spacing: DesignTokens.Spacing.sm) {
             if isLoading {
                 ProgressView()
-                    .tint(DesignTokens.Colors.primary)
+                    .tint(theme.accentPrimary)
             } else {
                 iconView
             }
@@ -114,17 +116,17 @@ public struct AppButton: View {
         .frame(maxWidth: .infinity)
         .frame(height: DesignTokens.Sizing.buttonHeight)
         .background(
-            RoundedRectangle(cornerRadius: DesignTokens.CornerRadius.lg, style: .continuous)
-                .stroke(DesignTokens.Colors.primary.opacity(DesignTokens.Opacity.veryTransparent), lineWidth: DesignTokens.Border.thick)
+            RoundedRectangle(cornerRadius: theme.radius(DesignTokens.CornerRadius.lg), style: .continuous)
+                .stroke(theme.accentPrimary.opacity(DesignTokens.Opacity.veryTransparent), lineWidth: DesignTokens.Border.thick)
         )
-        .foregroundColor(DesignTokens.Colors.primary)
+        .foregroundColor(theme.accentPrimary)
     }
 
     private var ghostContent: some View {
         HStack(spacing: DesignTokens.Spacing.sm) {
             if isLoading {
                 ProgressView()
-                    .tint(DesignTokens.Colors.primary)
+                    .tint(theme.accentPrimary)
             } else {
                 iconView
             }

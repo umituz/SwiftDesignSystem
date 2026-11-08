@@ -10,14 +10,16 @@ public enum AppProgressStyle: Sendable {
 public struct AppProgressView: View {
     let progress: Double
     let style: AppProgressStyle
-    let color: Color
+    let color: Color?
     let backgroundColor: Color
     let label: String?
+
+    @Environment(\.appTheme) private var theme
 
     public init(
         progress: Double,
         style: AppProgressStyle = .circular,
-        color: Color = DesignTokens.Colors.primary,
+        color: Color? = nil,
         backgroundColor: Color = DesignTokens.Colors.surface,
         label: String? = nil
     ) {
@@ -26,6 +28,11 @@ public struct AppProgressView: View {
         self.color = color
         self.backgroundColor = backgroundColor
         self.label = label
+    }
+
+    /// Explicit color wins; otherwise the active theme accent is used.
+    private var resolvedColor: Color {
+        color ?? theme.accentPrimary
     }
 
     public var body: some View {
@@ -47,7 +54,7 @@ public struct AppProgressView: View {
 
                 Circle()
                     .trim(from: 0, to: progress)
-                    .stroke(color, style: StrokeStyle(lineWidth: DesignTokens.Border.thick, lineCap: .round))
+                    .stroke(resolvedColor, style: StrokeStyle(lineWidth: DesignTokens.Border.thick, lineCap: .round))
                     .rotationEffect(.degrees(-90))
                     .animation(DesignTokens.Animations.progress, value: progress)
 
@@ -77,7 +84,7 @@ public struct AppProgressView: View {
                         .fill(backgroundColor)
 
                     RoundedRectangle(cornerRadius: DesignTokens.CornerRadius.sm)
-                        .fill(color)
+                        .fill(resolvedColor)
                         .frame(width: ProgressCalculation.barWidth(fraction: progress, availableWidth: geometry.size.width))
                         .animation(DesignTokens.Animations.progress, value: progress)
                 }

@@ -34,6 +34,39 @@ Extensions/     View modifiers (cardStyle, appShadow, responsivePadding)
 import SwiftDesignSystem
 ```
 
+### Theming (v1.1.0)
+
+Apply a theme **once at the app root** — themed components (`AppButton`, `AppBadge`, `AppProgressView`, …) and native controls follow automatically. No wrapper layer needed:
+
+```swift
+@main
+struct MyApp: App {
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
+                .appTheme(.ocean)   // one line per app
+        }
+    }
+}
+```
+
+Built-in presets: `.standard` (fleet default — identical to classic tokens) · `.ocean` · `.sunset` · `.forest` · `.royal` · `.rose` · `.amber` (contrast-safe dark labels) · `.midnight`.
+
+Each preset carries an accent palette (`accentPrimary/Secondary/Tertiary` + `onAccent`) and a corner personality (`sharp/standard/soft`) — same design system, distinct look per app:
+
+```swift
+AppTheme.standard.heroGradient        // gradient from the active palette
+AppTheme.standard.radius(16)          // base radius scaled by personality (1.0x)
+AppTheme.amber.radius(16)             // 9.6 (sharp 0.6x)
+AppTheme.ocean.radius(16)             // 22.4 (soft 1.4x)
+
+// Custom brand when a preset doesn't fit:
+let brand = AppTheme(
+    name: "brand", accentPrimary: .teal, accentSecondary: .blue, accentTertiary: .cyan,
+    onAccent: .white, radiusStyle: .soft
+)
+```
+
 ### Design Tokens
 
 ```swift
