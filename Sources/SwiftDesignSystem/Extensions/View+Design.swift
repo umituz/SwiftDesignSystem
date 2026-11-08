@@ -79,10 +79,16 @@ extension View {
 #if canImport(UIKit)
 import UIKit
 
-/// Legacy `UIRectCorner` adapter for `roundedCorners(_:corners:)`.
+/// Legacy `UIRectCorner` adapter for `roundedCorners(_:corners:)` — public so
+/// apps can use the shape directly in gradients and fills.
 public struct RoundedCornersShape: Shape {
-    let radius: CGFloat
-    let corners: UIRectCorner
+    public let radius: CGFloat
+    public let corners: UIRectCorner
+
+    public init(radius: CGFloat, corners: UIRectCorner) {
+        self.radius = radius
+        self.corners = corners
+    }
 
     public func path(in rect: CGRect) -> Path {
         Path(
