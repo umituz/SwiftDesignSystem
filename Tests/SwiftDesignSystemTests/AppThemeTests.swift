@@ -128,6 +128,24 @@ final class AppThemeTests: XCTestCase {
         XCTAssertEqual(DesignTokens.Sizing.avatarLarge, 80, accuracy: 0.001)
         XCTAssertEqual(DesignTokens.Sizing.controlHeight, 44, accuracy: 0.001)
     }
+
+    // MARK: - v1.3.0 Additions
+
+    func testThemeSurfaceDefaultsToSystemSurface() {
+        XCTAssertEqual(AppTheme.standard.surface, DesignTokens.Colors.surface)
+        XCTAssertEqual(AppTheme.ocean.surface, DesignTokens.Colors.surface)
+    }
+
+    func testCustomSurfaceIsHonored() {
+        let branded = AppTheme(
+            name: "branded",
+            accentPrimary: .brown,
+            accentSecondary: .pink,
+            accentTertiary: .orange,
+            surface: Color("NoSuchAsset", bundle: .main)
+        )
+        XCTAssertNotEqual(branded.surface, DesignTokens.Colors.surface)
+    }
 }
 
 // MARK: - Preset Catalog

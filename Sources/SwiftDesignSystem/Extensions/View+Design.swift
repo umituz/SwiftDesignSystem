@@ -1,15 +1,27 @@
 import SwiftUI
 
 // MARK: - Card Styles
+/// Card container resolving its surface from the active theme — apps brand
+/// their cards through `AppTheme.surface` without local wrapper modifiers.
+private struct ThemedCardStyleModifier: ViewModifier {
+    @Environment(\.appTheme) private var theme
+    let padding: CGFloat
+    let cornerRadius: CGFloat
+
+    func body(content: Content) -> some View {
+        content
+            .padding(padding)
+            .background(theme.surface)
+            .clipShape(RoundedRectangle(cornerRadius: cornerRadius, style: .continuous))
+    }
+}
+
 extension View {
     public func cardStyle(
         padding: CGFloat = DesignTokens.Spacing.lg,
         cornerRadius: CGFloat = DesignTokens.CornerRadius.lg
     ) -> some View {
-        self
-            .padding(padding)
-            .background(DesignTokens.Colors.surface)
-            .clipShape(RoundedRectangle(cornerRadius: cornerRadius, style: .continuous))
+        modifier(ThemedCardStyleModifier(padding: padding, cornerRadius: cornerRadius))
     }
 
     public func primaryCardStyle(

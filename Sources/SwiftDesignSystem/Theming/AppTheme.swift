@@ -38,6 +38,8 @@ public struct AppTheme: Sendable, Equatable {
     public let accentTertiary: Color
     /// Text/icon color rendered on top of accent fills (contrast-safe).
     public let onAccent: Color
+    /// Brand surface for cards and containers — `cardStyle()` renders this.
+    public let surface: Color
     /// Corner-radius personality applied to all themed components.
     public let radiusStyle: AppRadiusStyle
 
@@ -47,6 +49,7 @@ public struct AppTheme: Sendable, Equatable {
         accentSecondary: Color,
         accentTertiary: Color,
         onAccent: Color = .white,
+        surface: Color = DesignTokens.Colors.surface,
         radiusStyle: AppRadiusStyle = .standard
     ) {
         self.name = name
@@ -54,6 +57,7 @@ public struct AppTheme: Sendable, Equatable {
         self.accentSecondary = accentSecondary
         self.accentTertiary = accentTertiary
         self.onAccent = onAccent
+        self.surface = surface
         self.radiusStyle = radiusStyle
     }
 

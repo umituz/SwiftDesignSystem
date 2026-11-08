@@ -4,6 +4,12 @@ All notable changes to this package are documented here.
 Quality gate for every release: `swiftlint` clean + `swift build` + `swift test` green.
 Consumers bind via SPM URL (`from: 1.0.0`) — releases follow strict SemVer.
 
+## [1.3.0] — 2026-11-09
+
+### Added
+- **`AppTheme.surface`** — brand card/container surface; defaults to the system surface so existing themes are unchanged.
+- **`cardStyle()` is theme-aware** — renders `theme.surface`, letting apps brand cards through the theme instead of local wrapper modifiers (signature unchanged).
+
 ## [1.2.0] — 2026-11-09
 
 ### Added
