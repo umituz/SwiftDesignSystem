@@ -47,4 +47,21 @@ final class StateStyleTests: XCTestCase {
 
         XCTAssertNotNil(styled)
     }
+
+    // MARK: - Selective Corners
+
+    func testRoundedCornersHelperCompilesAndCoversBounds() {
+        #if canImport(UIKit)
+        let view = Text("bubble").roundedCorners(8, corners: [.topLeft, .bottomRight])
+        XCTAssertNotNil(view)
+
+        let shape = RoundedCornersShape(radius: 8, corners: .allCorners)
+        let path = shape.path(in: CGRect(x: 0, y: 0, width: 100, height: 50))
+        XCTAssertEqual(path.boundingBox.width, 100, accuracy: 1)
+        XCTAssertEqual(path.boundingBox.height, 50, accuracy: 1)
+        #else
+        let view = Text("bubble").roundedCorners(8, topLeft: 8)
+        XCTAssertNotNil(view)
+        #endif
+    }
 }

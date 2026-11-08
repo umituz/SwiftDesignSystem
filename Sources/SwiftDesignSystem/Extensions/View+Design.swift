@@ -48,7 +48,53 @@ extension View {
     public func appCornerRadius(_ radius: CGFloat) -> some View {
         self.clipShape(RoundedRectangle(cornerRadius: radius, style: .continuous))
     }
+
+    /// Rounds only the given corners — chat bubbles, list section caps and
+    /// hero headers that sit flush against an edge.
+    #if canImport(UIKit)
+    public func roundedCorners(_ radius: CGFloat, corners: UIRectCorner) -> some View {
+        self.clipShape(RoundedCornersShape(radius: radius, corners: corners))
+    }
+    #else
+    public func roundedCorners(
+        _ radius: CGFloat,
+        topLeft: CGFloat = 0,
+        bottomLeft: CGFloat = 0,
+        bottomRight: CGFloat = 0,
+        topRight: CGFloat = 0
+    ) -> some View {
+        self.clipShape(
+            UnevenRoundedRectangle(
+                topLeadingRadius: topLeft,
+                bottomLeadingRadius: bottomLeft,
+                bottomTrailingRadius: bottomRight,
+                topTrailingRadius: topRight,
+                style: .continuous
+            )
+        )
+    }
+    #endif
 }
+
+#if canImport(UIKit)
+import UIKit
+
+/// Legacy `UIRectCorner` adapter for `roundedCorners(_:corners:)`.
+public struct RoundedCornersShape: Shape {
+    let radius: CGFloat
+    let corners: UIRectCorner
+
+    public func path(in rect: CGRect) -> Path {
+        Path(
+            UIBezierPath(
+                roundedRect: rect,
+                byRoundingCorners: corners,
+                cornerRadii: CGSize(width: radius, height: radius)
+            ).cgPath
+        )
+    }
+}
+#endif
 
 // MARK: - Responsive Padding
 extension View {

@@ -4,6 +4,11 @@ All notable changes to this package are documented here.
 Quality gate for every release: `swiftlint` clean + `swift build` + `swift test` green.
 Consumers bind via SPM URL (`from: 1.0.0`) — releases follow strict SemVer.
 
+## [1.4.1] — 2026-11-09
+
+### Added
+- **`View.roundedCorners(_:corners:)`** — selective corner rounding for chat bubbles and flush-edge sections (`UIRectCorner` on UIKit platforms; per-corner radii via `UnevenRoundedRectangle` elsewhere).
+
 ## [1.4.0] — 2026-11-09
 
 ### Added
