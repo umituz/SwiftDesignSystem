@@ -4,6 +4,13 @@ All notable changes to this package are documented here.
 Quality gate for every release: `swiftlint` clean + `swift build` + `swift test` green.
 Consumers bind via SPM URL (`from: 1.0.0`) — releases follow strict SemVer.
 
+## [1.5.0] — 2026-11-09
+
+### Added
+- `select(_:_:_:)` — generic conditional value picker; shared primitive replacing per-app `Theme.foreground/opacity/scale` helper families (promoted from berdo, Choiyre, aria).
+- `View.ifNotNil(_:transform:)` — conditional transform with unwrapped optional value (promoted from Choiyre).
+- `View.if(_:if:else:)` — two-branch conditional transform companion to the existing single-branch `if` (promoted from berdo).
+
 ## [1.4.3] — 2026-11-09
 
 ### Changed
