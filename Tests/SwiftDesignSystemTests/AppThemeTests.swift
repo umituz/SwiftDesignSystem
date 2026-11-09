@@ -146,6 +146,25 @@ final class AppThemeTests: XCTestCase {
         )
         XCTAssertNotEqual(branded.surface, DesignTokens.Colors.surface)
     }
+
+    // MARK: - Parameterized root overload
+
+    func testParameterizedOverloadBuildsThemeAndAcceptsNilAccents() {
+        // Compiles against the parameterized overload and produces a usable view.
+        let themed = Color.clear.appTheme(name: "derived", accentPrimary: .pink)
+        XCTAssertNotNil(themed)
+
+        // Derivation contract: omitted accents come from the primary accent.
+        let primary = Color(red: 0.5, green: 0.5, blue: 0.5)
+        let theme = AppTheme(
+            name: "derived",
+            accentPrimary: primary,
+            accentSecondary: primary.lighten(by: 0.15),
+            accentTertiary: primary.darken(by: 0.15)
+        )
+        XCTAssertEqual(theme.accentSecondary, primary.lighten(by: 0.15))
+        XCTAssertEqual(theme.accentTertiary, primary.darken(by: 0.15))
+    }
 }
 
 // MARK: - Preset Catalog

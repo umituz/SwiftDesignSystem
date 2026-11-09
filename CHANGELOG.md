@@ -4,6 +4,11 @@ All notable changes to this package are documented here.
 Quality gate for every release: `swiftlint` clean + `swift build` + `swift test` green.
 Consumers bind via SPM URL (`from: 1.0.0`) — releases follow strict SemVer.
 
+## [1.6.0] — 2026-11-09
+
+### Added
+- Parameterized `.appTheme(name:accentPrimary:accentSecondary:accentTertiary:surface:radiusStyle:)` root overload — the `AppTheme` type name never appears in app code, so product-local types named `AppTheme` (a common product-palette namespace) coexist with the design system without renames. Omitted accents derive from `accentPrimary` (lighten/darken 0.15).
+
 ## [1.5.0] — 2026-11-09
 
 ### Added

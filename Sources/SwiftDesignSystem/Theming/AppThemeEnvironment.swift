@@ -33,7 +33,36 @@ public struct AppThemeModifier: ViewModifier {
 
 extension View {
     /// Applies an `AppTheme` to the hierarchy — set once at the app root.
+    ///
+    /// Prefer the parameterized overload below at app roots: it never names
+    /// the `AppTheme` type, so apps keep their own product types named
+    /// `AppTheme` (a common product-palette namespace) without collision.
     public func appTheme(_ theme: AppTheme) -> some View {
         modifier(AppThemeModifier(theme: theme))
+    }
+
+    /// Applies a theme by describing it — the `AppTheme` type name never
+    /// appears in app code, so product-local types named `AppTheme` are
+    /// free to coexist with the design system.
+    ///
+    /// Omitted accents derive from `accentPrimary` (lightened/darkened);
+    /// `name` is an arbitrary identifier used by themed component logic.
+    public func appTheme(
+        name: String,
+        accentPrimary: Color,
+        accentSecondary: Color? = nil,
+        accentTertiary: Color? = nil,
+        surface: Color = DesignTokens.Colors.surface,
+        radiusStyle: AppRadiusStyle = .standard
+    ) -> some View {
+        let theme = AppTheme(
+            name: name,
+            accentPrimary: accentPrimary,
+            accentSecondary: accentSecondary ?? accentPrimary.lighten(by: 0.15),
+            accentTertiary: accentTertiary ?? accentPrimary.darken(by: 0.15),
+            surface: surface,
+            radiusStyle: radiusStyle
+        )
+        return modifier(AppThemeModifier(theme: theme))
     }
 }
