@@ -27,6 +27,7 @@ public struct AppThemeModifier: ViewModifier {
     public func body(content: Content) -> some View {
         content
             .environment(\.appTheme, theme)
+            .environment(\.designAccentColor, theme.accentPrimary)
             .tint(theme.accentPrimary)
     }
 }

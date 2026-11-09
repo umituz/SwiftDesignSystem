@@ -4,6 +4,11 @@ All notable changes to this package are documented here.
 Quality gate for every release: `swiftlint` clean + `swift build` + `swift test` green.
 Consumers bind via SPM URL (`from: 1.0.0`) — releases follow strict SemVer.
 
+## [1.7.1] — 2026-11-09
+
+### Fixed
+- `.appTheme(...)` now also sets `\.designAccentColor` from `theme.accentPrimary` — themed components that read `designAccentColor` (e.g. `AppSelectableCard` without an explicit `color:`) previously fell back to the design-system default indigo instead of the app's brand accent.
+
 ## [1.7.0] — 2026-11-09
 
 ### Added
