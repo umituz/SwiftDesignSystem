@@ -4,6 +4,11 @@ All notable changes to this package are documented here.
 Quality gate for every release: `swiftlint` clean + `swift build` + `swift test` green.
 Consumers bind via SPM URL (`from: 1.0.0`) — releases follow strict SemVer.
 
+## [1.7.0] — 2026-11-09
+
+### Added
+- **`AppQuestionStep`** — organism scaffold for one-question-per-step flows (onboarding, wizards, quizzes): optional back button + `AppStepIndicator` header, scrollable adaptive question column, pinned CTA with optional secondary "skip" action over frosted material. Content column spans full width on compact devices and centers at `iPadMaxWidth` on regular width; centers vertically when content fits the visible height and scrolls when it doesn't; keyboard-aware (`.scrollDismissesKeyboard(.interactively)`, CTA follows the keyboard). Draws no background of its own — place over the app's background in a `ZStack`. Promoted from kinetic's local `OnboardingLayout` (first consumer).
+
 ## [1.6.0] — 2026-11-09
 
 ### Added

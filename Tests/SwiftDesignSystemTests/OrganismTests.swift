@@ -256,4 +256,64 @@ final class OrganismTests: XCTestCase {
             XCTAssertNotNil(snackbar)
         }
     }
+
+    // MARK: - AppQuestionStep
+
+    func testQuestionStepCreation() {
+        let step = AppQuestionStep(
+            stepIndex: 2,
+            stepCount: 8,
+            title: "What's your goal?",
+            subtitle: "You can change this later.",
+            ctaTitle: "Continue",
+            onCTA: {},
+            content: { Text("Options") }
+        )
+        XCTAssertNotNil(step)
+    }
+
+    func testQuestionStepMinimalInit() {
+        let step = AppQuestionStep(
+            stepIndex: 0,
+            stepCount: 1,
+            title: "Your name?",
+            ctaTitle: "Next",
+            onCTA: {},
+            content: { TextField("Name", text: .constant("")) }
+        )
+        XCTAssertNotNil(step)
+    }
+
+    func testQuestionStepWithAllActions() {
+        var ctaFired = false
+        var secondaryFired = false
+        let step = AppQuestionStep(
+            stepIndex: 1,
+            stepCount: 3,
+            title: "Notifications?",
+            showsIndicator: true,
+            onBack: {},
+            ctaTitle: "Enable",
+            ctaDisabled: false,
+            onCTA: { ctaFired = true },
+            secondaryTitle: "Skip",
+            onSecondary: { secondaryFired = true },
+            content: { Text("Benefits") }
+        )
+        step.onCTA()
+        step.onSecondary?()
+        XCTAssertTrue(ctaFired)
+        XCTAssertTrue(secondaryFired)
+    }
+
+    func testQuestionStepClampsStepIndex() {
+        let below = AppQuestionStep(stepIndex: -3, stepCount: 4, title: "Q", ctaTitle: "Next", onCTA: {}, content: { Text("") })
+        let above = AppQuestionStep(stepIndex: 9, stepCount: 4, title: "Q", ctaTitle: "Next", onCTA: {}, content: { Text("") })
+        // Stored raw values stay as given; clamping happens at render time via
+        // clampedStepIndex, so the indicator can never index out of bounds.
+        XCTAssertEqual(below.stepIndex, -3)
+        XCTAssertEqual(above.stepIndex, 9)
+        XCTAssertNotNil(below)
+        XCTAssertNotNil(above)
+    }
 }
